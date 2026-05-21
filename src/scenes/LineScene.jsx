@@ -1,65 +1,70 @@
 import { useEffect, useState } from 'react';
 import './scenes.css';
 
+const IMAGE_MAP = {
+  waiting:  '/images/tbosw-line1.jpg',
+  impact:   '/images/tbosw-line2.jpg',
+  together: '/images/tbosw-line3.jpg',
+};
+
 export default function LineScene({ activeTriggers = [] }) {
-  const [girlVisible, setGirlVisible] = useState(false);
-  const [girlPos, setGirlPos] = useState(110);
+  const [lineState, setLineState] = useState('waiting');
+  const [imgOpacity, setImgOpacity] = useState(1);
+  const [shaking, setShaking] = useState(false);
+  const [dustParticles, setDustParticles] = useState([]);
 
   useEffect(() => {
-    if (activeTriggers.includes('SPAWN_THE_GIRL') && !girlVisible) {
-      setGirlVisible(true);
-      setGirlPos(110);
-      requestAnimationFrame(() => {
-        setTimeout(() => setGirlPos(68), 50);
-      });
+    if (activeTriggers.includes('SCREEN_SHAKE') && lineState === 'waiting') {
+      // Screen shake
+      setShaking(true);
+      setTimeout(() => setShaking(false), 420);
+
+      // Dust burst at impact
+      const ps = Array.from({ length: 12 }, (_, i) => ({
+        id: i,
+        x: 35 + Math.random() * 15,
+        dx: (Math.random() - 0.5) * 10,
+        dy: -(15 + Math.random() * 20),
+        size: 3 + Math.random() * 4,
+        delay: Math.random() * 0.15,
+      }));
+      setDustParticles(ps);
+      setTimeout(() => setDustParticles([]), 700);
+
+      // Cross-dissolve: waiting → impact
+      setImgOpacity(0);
+      setTimeout(() => { setLineState('impact'); setImgOpacity(1); }, 300);
+
+      // Cross-dissolve: impact → together
+      setTimeout(() => setImgOpacity(0), 1400);
+      setTimeout(() => { setLineState('together'); setImgOpacity(1); }, 1700);
     }
   }, [activeTriggers]);
 
-  const figures = Array.from({ length: 9 }, (_, i) => i);
-
   return (
-    <div className="scene line-scene">
-      {/* Hazy sky */}
-      <div className="line-sky" />
-      {/* Ground */}
-      <div className="line-ground" />
-      {/* Dust shimmer */}
-      <div className="line-dust" />
-      {/* Perspective queue */}
-      <div className="queue-container">
-        {figures.map(i => (
-          <div
-            key={i}
-            className="queue-figure"
-            style={{
-              left: `${20 + i * 6.5}%`,
-              height: `${36 - i * 2}%`,
-              opacity: 1 - i * 0.07,
-              zIndex: 10 - i,
-            }}
-          />
-        ))}
-        {/* Player (BOY) in line */}
+    <div className={`scene line-scene ${shaking ? 'screen-shake' : ''}`}>
+      <img
+        className="scene-bg"
+        src={IMAGE_MAP[lineState]}
+        style={{ opacity: imgOpacity, transition: 'opacity 0.3s ease' }}
+        alt=""
+      />
+      <div className="scene-vignette" />
+      {dustParticles.map(p => (
         <div
-          className="queue-figure player-figure"
-          style={{ left: '24%', height: '34%', zIndex: 12 }}
-        />
-        {/* Cloaked figure beside player */}
-        <div
-          className="queue-figure cloak-figure"
-          style={{ left: '19%', height: '36%', zIndex: 11 }}
-        />
-      </div>
-      {/* The Girl running in */}
-      {girlVisible && (
-        <div
-          className="silhouette girl-running"
+          key={p.id}
+          className="dust-particle"
           style={{
-            left: `${girlPos}%`,
-            transition: 'left 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            left: `${p.x}%`,
+            bottom: '42%',
+            width: p.size,
+            height: p.size,
+            '--dx': `${p.dx}vw`,
+            '--dy': `${p.dy}vh`,
+            animationDelay: `${p.delay}s`,
           }}
         />
-      )}
+      ))}
     </div>
   );
 }

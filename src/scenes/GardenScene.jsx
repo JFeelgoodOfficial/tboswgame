@@ -2,22 +2,16 @@ import { useEffect, useState } from 'react';
 import './scenes.css';
 
 export default function GardenScene({ activeTriggers = [] }) {
-  const [strangerGone, setStrangerGone] = useState(false);
-  const [cloakGone, setCloakGone] = useState(false);
   const [maskVisible, setMaskVisible] = useState(false);
   const [maskDropped, setMaskDropped] = useState(false);
   const [hugging, setHugging] = useState(false);
-
-  useEffect(() => {
-    if (activeTriggers.includes('STRANGER_WALKS_OFFSCREEN') && !strangerGone) {
-      setStrangerGone(true);
-    }
-  }, [activeTriggers]);
+  const [strangerDeparting, setStrangerDeparting] = useState(false);
+  const [cloakFading, setCloakFading] = useState(false);
 
   useEffect(() => {
     if (activeTriggers.includes('HUG_ANIMATION') && !hugging) {
       setHugging(true);
-      setTimeout(() => setHugging(false), 2000);
+      setTimeout(() => setHugging(false), 3600);
     }
   }, [activeTriggers]);
 
@@ -29,36 +23,28 @@ export default function GardenScene({ activeTriggers = [] }) {
   }, [activeTriggers]);
 
   useEffect(() => {
-    if (activeTriggers.includes('CLOAKED_DISSOLVE') && !cloakGone) {
-      setTimeout(() => setCloakGone(true), 2500);
+    if (activeTriggers.includes('CLOAKED_DISSOLVE') && !cloakFading) {
+      setCloakFading(true);
+    }
+  }, [activeTriggers]);
+
+  useEffect(() => {
+    if (activeTriggers.includes('STRANGER_WALKS_OFFSCREEN') && !strangerDeparting) {
+      setStrangerDeparting(true);
     }
   }, [activeTriggers]);
 
   return (
     <div className="scene garden-scene">
-      {/* Sky */}
-      <div className="garden-sky" />
-      {/* Warm haze */}
-      <div className="garden-haze" />
-      {/* Ground with plants */}
-      <div className="garden-ground" />
-      {/* Plant decorations */}
-      <div className="garden-plants" />
-      {/* Stranger silhouette */}
-      <div
-        className={`silhouette stranger-silhouette ${strangerGone ? 'walking-off' : ''}`}
-      />
-      {/* Cloaked figure in garden */}
-      {!cloakGone && (
-        <div className={`silhouette garden-cloak ${activeTriggers.includes('CLOAKED_DISSOLVE') ? 'dissolving' : ''} ${hugging ? 'hugging' : ''}`} />
-      )}
-      {/* Player */}
-      <div className={`silhouette garden-boy ${hugging ? 'hugging-player' : ''}`} />
-      {/* Girl */}
-      <div className={`silhouette garden-girl ${hugging ? 'hugging-girl' : ''}`} />
-      {/* Dropped mask */}
+      <img className="scene-bg" src="/images/tbosw-stranger.jpg" alt="" />
+      <div className="scene-vignette" />
+      {hugging && <div className="hug-warmth" />}
+      <div className={`stranger-depart ${strangerDeparting ? 'active' : ''}`} />
+      <div className={`cloak-fade ${cloakFading ? 'active' : ''}`} />
       {maskVisible && (
-        <div className={`mask-object ${maskDropped ? 'landed' : 'falling'}`} />
+        <div className={`mask-object ${maskDropped ? 'landed' : 'falling'}`}
+          style={{ left: '48%', bottom: '32%' }}
+        />
       )}
     </div>
   );

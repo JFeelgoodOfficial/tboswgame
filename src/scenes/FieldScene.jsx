@@ -1,13 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './scenes.css';
-
-function Particle({ style }) {
-  return <div className="particle" style={style} />;
-}
 
 export default function FieldScene({ activeTriggers = [] }) {
   const [particles, setParticles] = useState([]);
-  const [cloakedVisible, setCloakedVisible] = useState(false);
 
   useEffect(() => {
     const ps = Array.from({ length: 28 }, (_, i) => ({
@@ -21,34 +16,11 @@ export default function FieldScene({ activeTriggers = [] }) {
     setParticles(ps);
   }, []);
 
-  useEffect(() => {
-    if (activeTriggers.includes('TRANSITION_TO_CLOAKED_FIGURE')) {
-      setTimeout(() => setCloakedVisible(true), 800);
-    }
-  }, [activeTriggers]);
-
   return (
     <div className="scene field-scene">
-      {/* Sky gradient */}
-      <div className="field-sky" />
-      {/* Stars */}
-      <div className="field-stars" />
-      {/* Horizon glow */}
-      <div className="field-horizon" />
-      {/* River */}
-      <div className="field-river">
-        <div className="river-shimmer" />
-      </div>
-      {/* Grass layers */}
-      <div className="field-grass-far" />
-      <div className="field-grass-near" />
-      {/* Lady in White silhouette */}
-      <div className="silhouette lady-silhouette" />
-      {/* Cloaked Figure across river */}
-      {cloakedVisible && (
-        <div className="silhouette cloak-silhouette field-cloak" />
-      )}
-      {/* Dandelion particles */}
+      <img className="scene-bg" src="/images/tbosw-lady.jpg" alt="" />
+      <div className="scene-vignette" />
+      <div className="river-shimmer-overlay" />
       {particles.map(p => (
         <div
           key={p.id}

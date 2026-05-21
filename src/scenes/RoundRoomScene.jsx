@@ -6,7 +6,6 @@ export default function RoundRoomScene({ activeTriggers = [] }) {
   const [fractured, setFractured] = useState(false);
   const [pulsing, setPulsing] = useState(false);
   const [stillnessActive, setStillnessActive] = useState(false);
-  const [darknessReceding, setDarknessReceding] = useState(false);
 
   useEffect(() => {
     if (activeTriggers.includes('MONSTER_PULSE')) {
@@ -35,17 +34,11 @@ export default function RoundRoomScene({ activeTriggers = [] }) {
 
   return (
     <div className={`scene round-room-scene ${pulsing ? 'pulsing' : ''} ${fractured ? 'fractured' : ''}`}>
-      {/* Room base */}
-      <div className="room-floor" />
-      {/* Concentric rings */}
-      {[1,2,3,4,5].map(i => (
-        <div key={i} className={`room-ring ring-${i}`} />
-      ))}
-      {/* Shadow edges */}
+      <img className="scene-bg" src="/images/tbosw-roundroom.jpg" alt="" />
+      <div className="scene-vignette" />
+      <div className="spotlight-flicker" />
       <div className={`room-shadows ${stillnessActive ? 'receding' : ''}`} />
-      {/* Shadow boy */}
-      {shadowVisible && <div className="silhouette shadow-boy" />}
-      {/* Fracture lines */}
+      {shadowVisible && <div className="shadow-reveal" />}
       {fractured && (
         <div className="fracture-overlay">
           {[...Array(8)].map((_, i) => (
