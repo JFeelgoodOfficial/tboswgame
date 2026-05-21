@@ -1,0 +1,771 @@
+/* ════════════════════════════════════════════════
+   SHARED SCENE BASE
+   ════════════════════════════════════════════════ */
+.scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* ── Screen shake ── */
+@keyframes screenShake {
+  0%  { transform: translate(0, 0); }
+  15% { transform: translate(-8px, 2px); }
+  30% { transform: translate(7px, -3px); }
+  45% { transform: translate(-5px, 4px); }
+  60% { transform: translate(6px, -2px); }
+  75% { transform: translate(-4px, 3px); }
+  90% { transform: translate(3px, -1px); }
+  100%{ transform: translate(0, 0); }
+}
+.screen-shake { animation: screenShake 0.42s ease; }
+
+/* ════════════════════════════════════════════════
+   SILHOUETTES — shared shapes
+   ════════════════════════════════════════════════ */
+.silhouette {
+  position: absolute;
+  background: rgba(10, 8, 6, 0.88);
+}
+
+/* Lady in White — brighter */
+.lady-silhouette {
+  width: 7%;
+  height: 28%;
+  bottom: 34%;
+  left: 36%;
+  background: rgba(240, 235, 220, 0.82);
+  clip-path: polygon(35% 0%, 65% 0%, 75% 20%, 80% 60%, 90% 100%, 10% 100%, 20% 60%, 25% 20%);
+  filter: blur(0.5px);
+}
+
+/* Cloaked figure — field version */
+.field-cloak {
+  width: 5%;
+  height: 24%;
+  bottom: 37%;
+  right: 22%;
+  background: rgba(20, 15, 10, 0.9);
+  clip-path: polygon(30% 0%, 70% 0%, 75% 15%, 80% 100%, 20% 100%, 25% 15%);
+  animation: cloakAppear 1.2s ease forwards;
+}
+
+@keyframes cloakAppear {
+  from { opacity: 0; transform: scaleY(0.6); }
+  to   { opacity: 1; transform: scaleY(1); }
+}
+
+.cloak-silhouette {
+  background: rgba(15, 10, 8, 0.92);
+  clip-path: polygon(30% 0%, 70% 0%, 75% 15%, 80% 100%, 20% 100%, 25% 15%);
+}
+
+/* Queue figures */
+.queue-figure {
+  position: absolute;
+  bottom: 38%;
+  width: 3%;
+  background: rgba(30, 25, 20, 0.75);
+  clip-path: polygon(25% 0%, 75% 0%, 80% 20%, 85% 100%, 15% 100%, 20% 20%);
+}
+.queue-figure.player-figure {
+  background: rgba(50, 40, 30, 0.85);
+}
+.queue-figure.cloak-figure {
+  background: rgba(10, 8, 6, 0.92);
+  clip-path: polygon(30% 0%, 70% 0%, 75% 15%, 80% 100%, 20% 100%, 25% 15%);
+}
+
+/* Girl running */
+.girl-running {
+  width: 4%;
+  height: 24%;
+  bottom: 40%;
+  background: rgba(35, 28, 20, 0.85);
+  clip-path: polygon(30% 0%, 70% 0%, 85% 40%, 90% 100%, 10% 100%, 15% 40%);
+}
+
+/* ── Desert silhouettes ── */
+.warrior-silhouette {
+  width: 10%;
+  height: 22%;
+  bottom: 47.5%;
+  left: 45%;
+  background: rgba(15, 10, 8, 0.92);
+  clip-path: polygon(50% 0%, 75% 15%, 80% 50%, 70% 80%, 85% 100%, 15% 100%, 30% 80%, 20% 50%, 25% 15%);
+  transition: transform 0.6s ease;
+}
+
+.warrior-silhouette.embracing {
+  transform: translateX(8%) scale(1.03);
+}
+
+.desert-boy {
+  width: 4.5%;
+  height: 18%;
+  bottom: 39%;
+  left: 39%;
+  background: rgba(25, 20, 15, 0.85);
+  clip-path: polygon(30% 0%, 70% 0%, 75% 25%, 80% 100%, 20% 100%, 25% 25%);
+  transition: transform 0.6s ease;
+}
+.desert-boy.embracing-player { transform: translateX(8%) translateY(-2%); }
+
+.desert-girl {
+  width: 3.5%;
+  height: 16%;
+  bottom: 39%;
+  left: 34.5%;
+  background: rgba(25, 20, 15, 0.82);
+  clip-path: polygon(30% 0%, 70% 0%, 75% 25%, 80% 100%, 20% 100%, 25% 25%);
+  transition: transform 0.6s ease;
+}
+.desert-girl.embracing-girl { transform: translateX(18%) translateY(-2%); }
+
+/* ── Darkness scene ── */
+.dark-cloak {
+  width: 6%;
+  height: 30%;
+  bottom: 35%;
+  left: 47%;
+  background: rgba(20, 15, 25, 0.5);
+  clip-path: polygon(30% 0%, 70% 0%, 75% 15%, 80% 100%, 20% 100%, 25% 15%);
+  filter: blur(2px);
+}
+
+/* ── Round room shadow boy ── */
+.shadow-boy {
+  width: 5%;
+  height: 22%;
+  bottom: 38%;
+  right: 30%;
+  background: rgba(8, 5, 15, 0.7);
+  clip-path: polygon(30% 0%, 70% 0%, 75% 25%, 80% 100%, 20% 100%, 25% 25%);
+  animation: shadowAppear 2s ease forwards;
+  filter: blur(1.5px);
+}
+@keyframes shadowAppear {
+  from { opacity: 0; filter: blur(6px); }
+  to   { opacity: 1; filter: blur(1.5px); }
+}
+
+/* ── Garden silhouettes ── */
+.stranger-silhouette {
+  width: 6%;
+  height: 20%;
+  bottom: 36%;
+  left: 28%;
+  background: rgba(20, 15, 10, 0.82);
+  clip-path: polygon(20% 0%, 80% 0%, 90% 40%, 85% 100%, 15% 100%, 10% 40%);
+  transition: left 1.8s ease, opacity 0.8s ease;
+}
+.stranger-silhouette.walking-off {
+  left: 105%;
+  opacity: 0;
+}
+
+.garden-cloak {
+  width: 5%;
+  height: 24%;
+  bottom: 36%;
+  left: 52%;
+  background: rgba(15, 10, 8, 0.88);
+  clip-path: polygon(30% 0%, 70% 0%, 75% 15%, 80% 100%, 20% 100%, 25% 15%);
+  transition: opacity 2.5s ease;
+}
+.garden-cloak.dissolving { opacity: 0; }
+.garden-cloak.hugging { transform: translateX(-8%); }
+
+.garden-boy {
+  width: 4%;
+  height: 18%;
+  bottom: 36%;
+  left: 58%;
+  background: rgba(25, 20, 15, 0.85);
+  clip-path: polygon(30% 0%, 70% 0%, 75% 25%, 80% 100%, 20% 100%, 25% 25%);
+  transition: transform 0.6s ease;
+}
+.garden-boy.hugging-player { transform: translateX(-10%); }
+
+.garden-girl {
+  width: 3.5%;
+  height: 16%;
+  bottom: 36%;
+  left: 63%;
+  background: rgba(25, 20, 15, 0.82);
+  clip-path: polygon(30% 0%, 70% 0%, 75% 25%, 80% 100%, 20% 100%, 25% 25%);
+  transition: transform 0.6s ease;
+}
+.garden-girl.hugging-girl { transform: translateX(-15%); }
+
+/* Mask object */
+.mask-object {
+  position: absolute;
+  width: 3%;
+  height: 4%;
+  left: 50%;
+  background: rgba(80, 70, 50, 0.8);
+  border: 1px solid rgba(150, 130, 90, 0.5);
+  clip-path: polygon(50% 0%, 90% 25%, 90% 75%, 50% 100%, 10% 75%, 10% 25%);
+  transition: bottom 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97), transform 0.3s;
+}
+.mask-object.falling { bottom: 90%; transform: rotate(15deg); }
+.mask-object.landed  { bottom: 35%; transform: rotate(0deg); animation: maskBounce 0.5s ease; }
+@keyframes maskBounce {
+  0%   { transform: rotate(15deg) translateY(0); }
+  30%  { transform: rotate(-5deg) translateY(-8px); }
+  60%  { transform: rotate(3deg) translateY(-3px); }
+  100% { transform: rotate(0deg) translateY(0); }
+}
+
+/* ════════════════════════════════════════════════
+   SCENE 1 — FIELD
+   ════════════════════════════════════════════════ */
+.field-scene { background: #0a0d1a; }
+
+.field-sky {
+  position: absolute;
+  inset: 0;
+  bottom: 38%;
+  background: linear-gradient(
+    to bottom,
+    #0a0d1a 0%,
+    #12203a 30%,
+    #1e3a5a 55%,
+    #2a4a6a 70%,
+    #c87e3a 85%,
+    #d4914a 100%
+  );
+}
+
+.field-stars {
+  position: absolute;
+  inset: 0;
+  bottom: 50%;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 8%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 40% 15%, rgba(255,255,255,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 5%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 75% 12%, rgba(255,255,255,0.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 22%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 92% 7%, rgba(255,255,255,0.7) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 55% 18%, rgba(255,255,240,0.9) 0%, transparent 100%);
+}
+
+.field-horizon {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 37%;
+  height: 6%;
+  background: linear-gradient(to top, rgba(200, 140, 70, 0.6), transparent);
+  filter: blur(4px);
+}
+
+.field-river {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 32%;
+  height: 8%;
+  background: linear-gradient(to bottom,
+    rgba(50, 80, 120, 0.85),
+    rgba(30, 55, 90, 0.9)
+  );
+  overflow: hidden;
+}
+
+.river-shimmer {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0px,
+    transparent 20px,
+    rgba(180, 210, 240, 0.15) 20px,
+    rgba(180, 210, 240, 0.15) 22px
+  );
+  animation: shimmerFlow 3s linear infinite;
+}
+@keyframes shimmerFlow {
+  from { transform: translateX(0); }
+  to   { transform: translateX(22px); }
+}
+
+.field-grass-far {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 28%;
+  height: 12%;
+  background: linear-gradient(to top, #1a2e10 0%, #243818 60%, transparent 100%);
+}
+
+.field-grass-near {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 0;
+  height: 34%;
+  background: linear-gradient(to top,
+    #0e1a08 0%,
+    #162508 20%,
+    #1c2e0e 50%,
+    #243818 100%
+  );
+}
+
+/* Dandelion seeds */
+.dandelion {
+  position: absolute;
+  bottom: 35%;
+  border-radius: 50%;
+  background: rgba(240, 230, 200, 0.7);
+  box-shadow: 0 0 3px rgba(240, 230, 200, 0.5);
+  animation: drift linear infinite;
+}
+@keyframes drift {
+  0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 1; }
+  100% { transform: translate(var(--dx, 60px), -60vh) rotate(360deg); opacity: 0; }
+}
+
+/* ════════════════════════════════════════════════
+   SCENE 2 — THE LINE
+   ════════════════════════════════════════════════ */
+.line-scene { background: #1a1608; }
+
+.line-sky {
+  position: absolute;
+  inset: 0;
+  bottom: 40%;
+  background: linear-gradient(to bottom,
+    #b8a87a 0%,
+    #c8b888 30%,
+    #d4c490 60%,
+    #c8b070 100%
+  );
+  filter: blur(0.5px);
+}
+
+.line-ground {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 0;
+  height: 42%;
+  background: linear-gradient(to top,
+    #1a1608 0%,
+    #2a2210 30%,
+    #3a3018 70%,
+    #4a3e20 100%
+  );
+}
+
+.line-dust {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 35%;
+  height: 20%;
+  background: radial-gradient(ellipse at center bottom,
+    rgba(200, 185, 140, 0.25) 0%,
+    transparent 70%
+  );
+  animation: dustFloat 5s ease-in-out infinite;
+}
+@keyframes dustFloat {
+  0%, 100% { opacity: 0.4; transform: scaleX(1); }
+  50%       { opacity: 0.7; transform: scaleX(1.05); }
+}
+
+.queue-container {
+  position: absolute;
+  inset: 0;
+}
+
+/* ════════════════════════════════════════════════
+   SCENE 3 — DESERT
+   ════════════════════════════════════════════════ */
+.desert-scene { background: #0e0805; }
+
+.desert-sky {
+  position: absolute;
+  inset: 0;
+  bottom: 38%;
+  background: linear-gradient(to bottom,
+    #1a0805 0%,
+    #2e1008 20%,
+    #5a2010 50%,
+    #8a3818 75%,
+    #b04820 100%
+  );
+}
+
+.desert-haze {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 36%;
+  height: 10%;
+  background: linear-gradient(to top, rgba(160, 80, 40, 0.4), transparent);
+  filter: blur(6px);
+}
+
+.desert-ground {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 0;
+  height: 40%;
+  background: linear-gradient(to top,
+    #0e0805 0%,
+    #1e1208 25%,
+    #2a1a0c 50%,
+    #361e0e 75%,
+    #4a2a14 100%
+  );
+}
+
+.desert-cracks {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 0;
+  height: 40%;
+  background: repeating-conic-gradient(
+    rgba(0,0,0,0.3) 0deg 1deg,
+    transparent 1deg 30deg
+  );
+  opacity: 0.4;
+}
+
+.thinking-stone {
+  position: absolute;
+  bottom: 38%;
+  left: 43%;
+  width: 14%;
+  height: 10%;
+  background: radial-gradient(ellipse at 40% 40%, #3a3028, #1a1410);
+  border-radius: 50%;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+}
+
+/* Ash particles */
+.ash-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(180, 140, 80, 0.7);
+  animation: ashRise linear forwards;
+}
+@keyframes ashRise {
+  0%   { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0.3); opacity: 0; }
+}
+
+/* ════════════════════════════════════════════════
+   SCENE 3B — DARKNESS
+   ════════════════════════════════════════════════ */
+.darkness-scene { background: #000; }
+
+.dark-stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 8% 12%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 22% 34%, rgba(255,255,255,0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 18%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 42%, rgba(255,255,255,0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 78% 8%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 88% 55%, rgba(255,255,255,0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 35% 68%, rgba(255,255,255,0.15) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 55% 25%, rgba(220,200,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 15% 75%, rgba(255,255,255,0.12) 0%, transparent 100%);
+}
+
+.dark-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center,
+    transparent 15%,
+    rgba(5, 0, 12, 0.4) 45%,
+    rgba(5, 0, 12, 0.85) 75%,
+    rgba(0, 0, 5, 0.98) 100%
+  );
+  animation: vignetteBreath 4s ease-in-out infinite;
+}
+@keyframes vignetteBreath {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.8; }
+}
+
+.darkness-collapse {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  animation: collapseIn 1s ease forwards;
+}
+@keyframes collapseIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ════════════════════════════════════════════════
+   SCENE 4 — ROUND ROOM
+   ════════════════════════════════════════════════ */
+.round-room-scene { background: #06060c; }
+
+.room-floor {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center,
+    #0e0e1a 0%,
+    #08080f 50%,
+    #04040a 100%
+  );
+}
+
+.room-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  border: 1px solid rgba(180, 170, 140, 0.08);
+  transform: translate(-50%, -50%);
+}
+.ring-1 { width: 20%; height: 20%; }
+.ring-2 { width: 40%; height: 40%; }
+.ring-3 { width: 60%; height: 60%; }
+.ring-4 { width: 80%; height: 80%; }
+.ring-5 { width: 100%; height: 100%; }
+
+.room-shadows {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center,
+    transparent 30%,
+    rgba(5, 0, 12, 0.5) 55%,
+    rgba(5, 0, 15, 0.88) 75%,
+    rgba(2, 0, 8, 0.98) 100%
+  );
+  transition: opacity 0.8s ease;
+  animation: shadowBreathe 3.5s ease-in-out infinite;
+}
+.room-shadows.receding {
+  background: radial-gradient(ellipse at center,
+    transparent 50%,
+    rgba(5, 0, 12, 0.3) 70%,
+    rgba(5, 0, 15, 0.6) 88%,
+    rgba(2, 0, 8, 0.85) 100%
+  );
+}
+@keyframes shadowBreathe {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.85; }
+}
+
+.round-room-scene.pulsing .room-shadows {
+  animation: monsterPulse 0.8s ease forwards;
+}
+@keyframes monsterPulse {
+  0%   { opacity: 1; }
+  25%  { opacity: 1; background: radial-gradient(ellipse at center, transparent 10%, rgba(5,0,12,0.8) 40%, rgba(2,0,8,0.99) 70%); }
+  100% { opacity: 1; }
+}
+
+/* Fracture */
+.fracture-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.fracture-line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 1px;
+  background: rgba(180, 160, 120, 0.5);
+  transform-origin: left center;
+  animation: fractureGrow 1.5s ease forwards;
+}
+.frac-0 { transform: rotate(0deg);   width: 0; animation-delay: 0s; }
+.frac-1 { transform: rotate(45deg);  width: 0; animation-delay: 0.1s; }
+.frac-2 { transform: rotate(90deg);  width: 0; animation-delay: 0.05s; }
+.frac-3 { transform: rotate(135deg); width: 0; animation-delay: 0.15s; }
+.frac-4 { transform: rotate(180deg); width: 0; animation-delay: 0.08s; }
+.frac-5 { transform: rotate(225deg); width: 0; animation-delay: 0.12s; }
+.frac-6 { transform: rotate(270deg); width: 0; animation-delay: 0.03s; }
+.frac-7 { transform: rotate(315deg); width: 0; animation-delay: 0.18s; }
+@keyframes fractureGrow {
+  to { width: 55vmax; }
+}
+
+.round-room-scene.fractured {
+  animation: fractureDissolve 2s ease 1.2s forwards;
+}
+@keyframes fractureDissolve {
+  to { opacity: 0; }
+}
+
+/* ════════════════════════════════════════════════
+   SCENE 5 — GARDEN
+   ════════════════════════════════════════════════ */
+.garden-scene { background: #0c0805; }
+
+.garden-sky {
+  position: absolute;
+  inset: 0;
+  bottom: 35%;
+  background: linear-gradient(to bottom,
+    #1a0e04 0%,
+    #3a2008 20%,
+    #6a3c12 45%,
+    #a05a20 65%,
+    #d48040 85%,
+    #e8a050 100%
+  );
+}
+
+.garden-haze {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 33%;
+  height: 12%;
+  background: linear-gradient(to top, rgba(180, 120, 50, 0.45), transparent);
+  filter: blur(8px);
+}
+
+.garden-ground {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 0;
+  height: 38%;
+  background: linear-gradient(to top,
+    #0c0805 0%,
+    #1a1008 25%,
+    #251808 50%,
+    #30200a 75%,
+    #3c280e 100%
+  );
+}
+
+.garden-plants {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 33%;
+  height: 16%;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0px,
+    transparent 18px,
+    rgba(30, 60, 20, 0.4) 18px,
+    rgba(30, 60, 20, 0.4) 22px,
+    transparent 22px,
+    transparent 28px,
+    rgba(25, 50, 18, 0.35) 28px,
+    rgba(25, 50, 18, 0.35) 30px
+  );
+}
+
+/* ════════════════════════════════════════════════
+   SCENE 6 — ENDING
+   ════════════════════════════════════════════════ */
+.ending-scene { background: #080c12; }
+
+.ending-sky {
+  position: absolute;
+  inset: 0;
+  bottom: 36%;
+  background: linear-gradient(to bottom,
+    #080c12 0%,
+    #0e1620 25%,
+    #142030 50%,
+    #1a2a3c 70%,
+    #2a3a4a 88%,
+    #3a4a56 100%
+  );
+}
+
+.ending-horizon {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 35%;
+  height: 5%;
+  background: linear-gradient(to top, rgba(100, 140, 160, 0.3), transparent);
+  filter: blur(5px);
+}
+
+.ending-ground {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 0;
+  height: 38%;
+  background: linear-gradient(to top,
+    #06080a 0%,
+    #0c1014 30%,
+    #10161a 60%,
+    #141e24 100%
+  );
+}
+
+.ending-mist {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 30%;
+  height: 20%;
+  background: radial-gradient(ellipse at center,
+    rgba(140, 170, 190, 0.12) 0%,
+    transparent 70%
+  );
+  animation: mistDrift 8s ease-in-out infinite;
+}
+@keyframes mistDrift {
+  0%, 100% { opacity: 0.6; transform: scaleX(1); }
+  50%       { opacity: 1; transform: scaleX(1.08); }
+}
+
+.ending-particle {
+  position: absolute;
+  bottom: 36%;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(180, 200, 220, 0.4);
+  animation: endingDrift linear infinite;
+}
+@keyframes endingDrift {
+  from { transform: translate(0, 0); opacity: 0; }
+  10%  { opacity: 1; }
+  100% { transform: translate(30px, -50vh); opacity: 0; }
+}
+
+/* ── Credits ── */
+.credits-scroll {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  z-index: 80;
+  background: rgba(0,0,0,0.55);
+}
+.credits-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 100vh;
+  animation: creditsRoll 28s linear forwards;
+  animation-delay: 0.5s;
+}
+@keyframes creditsRoll {
+  to { transform: translateY(-100%); }
+}
+.credits-line {
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.14em;
+  color: rgba(200, 185, 155, 0.85);
+  text-align: center;
+  line-height: 2.2;
+  white-space: nowrap;
+}
+.credits-line.spacer { height: 1.4rem; }
+.credits-title {
+  font-size: 1.1rem;
+  letter-spacing: 0.22em;
+  color: rgba(220, 210, 185, 1);
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
