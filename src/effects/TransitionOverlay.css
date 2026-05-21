@@ -1,0 +1,48 @@
+.transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+/* Fade to black */
+.transition-overlay.type-fade-black,
+.transition-overlay.type-crossfade,
+.transition-overlay.type-dissolve {
+  background: #000;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.transition-overlay.type-fade-black.state-in,
+.transition-overlay.type-crossfade.state-in,
+.transition-overlay.type-dissolve.state-in {
+  opacity: 1;
+  transition: opacity 0.7s ease;
+}
+.transition-overlay.type-fade-black.state-hold,
+.transition-overlay.type-crossfade.state-hold,
+.transition-overlay.type-dissolve.state-hold {
+  opacity: 1;
+}
+.transition-overlay.type-fade-black.state-out,
+.transition-overlay.type-crossfade.state-out,
+.transition-overlay.type-dissolve.state-out {
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+
+/* White flash */
+.transition-overlay.type-white-flash {
+  background: #fff;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.transition-overlay.type-white-flash.state-in {
+  opacity: 0.95;
+  transition: opacity 0.15s ease;
+}
+.transition-overlay.type-white-flash.state-hold { opacity: 0.95; }
+.transition-overlay.type-white-flash.state-out {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}

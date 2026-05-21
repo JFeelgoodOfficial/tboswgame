@@ -1,0 +1,36 @@
+.scene-manager {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+}
+
+.scene-label {
+  position: absolute;
+  top: 1.4rem;
+  left: 1.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.scene-label-text {
+  font-family: 'Courier New', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(200, 185, 155, 0.75);
+}
+
+.scene-label-deco {
+  font-size: 0.6rem;
+  color: rgba(200, 185, 155, 0.45);
+  letter-spacing: -0.05em;
+}
+
+.scene-fallback {
+  background: #04040a;
+}
