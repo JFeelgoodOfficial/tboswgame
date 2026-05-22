@@ -49,6 +49,11 @@ export const SCENE_MANIFEST = [
   {
     id: "darkness_event",
     requires: ["embracedWarrior"],
+    next: "pillow_scene",
+  },
+  {
+    id: "pillow_scene",
+    requires: ["embracedWarrior"],
     next: "round_room",
   },
   {

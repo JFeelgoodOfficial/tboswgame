@@ -34,28 +34,26 @@ export default function EndingScene({ activeTriggers = [] }) {
 
   useEffect(() => {
     if (activeTriggers.includes('CREDITS_ROLL')) {
-      setTimeout(() => setRolling(true), 400);
+      setTimeout(() => setRolling(true), 600);
     }
   }, [activeTriggers]);
 
   return (
     <div className="scene ending-scene">
-      {/* Field — emptier, different light */}
-      <div className="ending-sky" />
-      <div className="ending-horizon" />
-      <div className="ending-ground" />
-      <div className="ending-mist" />
-      {/* Subtle particles */}
-      {[...Array(14)].map((_, i) => (
+      <img className="scene-bg" src="/images/tbosw-ending.png" alt=""
+        style={{ objectPosition: 'center bottom' }} />
+      <div className="scene-vignette"
+        style={{ background: 'radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.5) 100%)' }} />
+      <div className="ending-star-shimmer" />
+      {[...Array(12)].map((_, i) => (
         <div key={i} className="ending-particle"
           style={{
-            left: `${Math.random() * 100}%`,
-            animationDuration: `${10 + i * 1.3}s`,
-            animationDelay: `${-i * 0.9}s`,
+            left: `${(i * 8.3) % 100}%`,
+            animationDuration: `${9 + i * 1.1}s`,
+            animationDelay: `${-i * 0.8}s`,
           }}
         />
       ))}
-      {/* Credits */}
       {rolling && (
         <div className="credits-scroll">
           <div className="credits-inner">

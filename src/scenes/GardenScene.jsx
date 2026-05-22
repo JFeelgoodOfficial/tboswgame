@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import './scenes.css';
 
 export default function GardenScene({ activeTriggers = [] }) {
-  const [maskVisible, setMaskVisible] = useState(false);
-  const [maskDropped, setMaskDropped] = useState(false);
   const [hugging, setHugging] = useState(false);
   const [strangerDeparting, setStrangerDeparting] = useState(false);
   const [cloakFading, setCloakFading] = useState(false);
@@ -16,21 +14,14 @@ export default function GardenScene({ activeTriggers = [] }) {
   }, [activeTriggers]);
 
   useEffect(() => {
-    if (activeTriggers.includes('MASK_DROP_ANIMATION') && !maskVisible) {
-      setMaskVisible(true);
-      setTimeout(() => setMaskDropped(true), 300);
+    if (activeTriggers.includes('STRANGER_WALKS_OFFSCREEN') && !strangerDeparting) {
+      setStrangerDeparting(true);
     }
   }, [activeTriggers]);
 
   useEffect(() => {
     if (activeTriggers.includes('CLOAKED_DISSOLVE') && !cloakFading) {
       setCloakFading(true);
-    }
-  }, [activeTriggers]);
-
-  useEffect(() => {
-    if (activeTriggers.includes('STRANGER_WALKS_OFFSCREEN') && !strangerDeparting) {
-      setStrangerDeparting(true);
     }
   }, [activeTriggers]);
 
@@ -41,11 +32,6 @@ export default function GardenScene({ activeTriggers = [] }) {
       {hugging && <div className="hug-warmth" />}
       <div className={`stranger-depart ${strangerDeparting ? 'active' : ''}`} />
       <div className={`cloak-fade ${cloakFading ? 'active' : ''}`} />
-      {maskVisible && (
-        <div className={`mask-object ${maskDropped ? 'landed' : 'falling'}`}
-          style={{ left: '48%', bottom: '32%' }}
-        />
-      )}
     </div>
   );
 }
