@@ -1,8 +1,22 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './scenes.css';
 
+const PILLOW_IMAGES = {
+  magic:     '/images/tbosw-pillows0.jpg',
+  hesitate:  '/images/tbosw-pillows1.jpg',
+  crash:     '/images/tbosw-pillows2.png',
+  aftermath: '/images/tbosw-pillows3.jpg',
+};
+
+function getImageState(lineId, activeTriggers) {
+  if (activeTriggers.includes('PILLOW_CRASH') || lineId === 'pillow_06') return 'crash';
+  if (lineId === 'pillow_07') return 'aftermath';
+  if (['pillow_03', 'pillow_04', 'pillow_05'].includes(lineId)) return 'hesitate';
+  return 'magic';
+}
+
 function PillowScatter() {
-  const pillows = useMemo(() => Array.from({ length: 10 }, (_, i) => ({
+  const pillows = Array.from({ length: 10 }, (_, i) => ({
     id: i,
     color: ['#7a8fd4','#c46060','#6aaa72','#c4a23a','#9a6ab8','#d4824a','#5a9ab8','#b86a7a','#c4c060','#7ab8a8'][i],
     angle: (i / 10) * 360 + (Math.random() - 0.5) * 25,
@@ -12,8 +26,7 @@ function PillowScatter() {
     startX: 35 + Math.random() * 30,
     startY: 35 + Math.random() * 30,
     delay: Math.random() * 0.25,
-  })), []);
-
+  }));
   return (
     <div className="pillow-scatter">
       {pillows.map(p => (
@@ -35,30 +48,41 @@ function PillowScatter() {
   );
 }
 
-export default function PillowScene({ onSceneComplete }) {
-  const [phase, setPhase] = useState(1);
-  const [imgOpacity, setImgOpacity] = useState(0);
+export default function PillowScene({ activeTriggers = [], currentLineId }) {
+  const [imgState, setImgState] = useState('magic');
+  const [imgOpacity, setImgOpacity] = useState(1);
+  const [shaking, setShaking] = useState(false);
+  const prevState = useRef('magic');
 
   useEffect(() => {
-    setTimeout(() => setImgOpacity(1), 100);
+    const next = getImageState(currentLineId, activeTriggers);
+    if (next !== prevState.current) {
+      setImgOpacity(0);
+      setTimeout(() => {
+        setImgState(next);
+        setImgOpacity(1);
+        prevState.current = next;
+      }, 320);
+    }
+  }, [currentLineId, activeTriggers]);
 
-    setTimeout(() => setImgOpacity(0), 2800);
-    setTimeout(() => { setPhase(2); setImgOpacity(1); }, 3150);
-
-    setTimeout(() => setImgOpacity(0), 5700);
-    setTimeout(() => onSceneComplete?.(), 6100);
-  }, []);
+  useEffect(() => {
+    if (activeTriggers.includes('PILLOW_CRASH')) {
+      setShaking(true);
+      setTimeout(() => setShaking(false), 500);
+    }
+  }, [activeTriggers]);
 
   return (
-    <div className="scene pillow-scene">
+    <div className={`scene pillow-scene ${shaking ? 'screen-shake' : ''}`}>
       <img
         className="scene-bg"
-        src={phase === 1 ? '/images/tbosw-pillow1.jpg' : '/images/tbosw-pillows2.png'}
-        style={{ opacity: imgOpacity, transition: 'opacity 0.35s ease', objectPosition: 'center top' }}
+        src={PILLOW_IMAGES[imgState]}
+        style={{ opacity: imgOpacity, transition: 'opacity 0.32s ease', objectPosition: 'center top' }}
         alt=""
       />
       <div className="scene-vignette" />
-      {phase === 2 && <PillowScatter />}
+      {imgState === 'crash' && <PillowScatter />}
     </div>
   );
 }
