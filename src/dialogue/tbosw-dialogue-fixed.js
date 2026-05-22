@@ -214,7 +214,29 @@ export const fieldScene_CloakedFigure = {
       id: "cloak_accept", speaker: "NARRATOR",
       text: "You nod to yourself. You are okay with this. You continue onward — together.",
       emotion: "determined",
-      trigger: "TRANSITION_TO_LINE_SCENE"
+      trigger: "TRANSITION_TO_LINE_SCENE",
+      next: "cloak_peterhivets_01"
+    },
+    cloak_peterhivets_01: {
+      id: "cloak_peterhivets_01", speaker: "NPC",
+      text: "I had finished the script. Tony Laverson suggested I go to Peter Hivets. He said he'd read it — and if he read it, he would stamp it. And if he stamped it, it was a good script.",
+      emotion: "neutral", next: "cloak_peterhivets_02",
+      setsFlag: "heardNPCStory"
+    },
+    cloak_peterhivets_02: {
+      id: "cloak_peterhivets_02", speaker: "NPC",
+      text: "I only had one thousand dollars. But I really needed it stamped. So I gave him my script. And every last dollar.",
+      emotion: "hesitant", next: "cloak_peterhivets_03"
+    },
+    cloak_peterhivets_03: {
+      id: "cloak_peterhivets_03", speaker: "NPC",
+      text: "There was no stamp. I said — 'There's no stamp.' He said: 'You paid me to READ it. Not to STAMP it. I didn't care for your script. Next time — make sure it's a good story first.'",
+      emotion: "broken", next: "cloak_peterhivets_04"
+    },
+    cloak_peterhivets_04: {
+      id: "cloak_peterhivets_04", speaker: "NARRATOR",
+      text: "A tear forms on the surface of the cloaked figure's mask. It rolls slowly down. Then — it disappears.",
+      emotion: "sad"
     }
   }
 };
@@ -256,7 +278,6 @@ export const lineScene_Crowd = {
       emotion: "hesitant",
       choices: [
         { label: "Wait", next: "line_wait" },
-        { label: "Listen to the crowd", next: "line_listen" },
         { label: "Leave the line", next: "line_leave" }
       ]
     },
@@ -272,27 +293,6 @@ export const lineScene_Crowd = {
       id: "line_wait_02", speaker: "BOY",
       text: "...",
       emotion: "quiet", next: "line_choice"
-    },
-    line_listen: {
-      id: "line_listen", speaker: "NPC",
-      text: "I had finished the script. Tony Laverson suggested I go to Peter Hivets. He said he'd read it — and if he read it, he would stamp it. And if he stamped it, it was a good script.",
-      emotion: "neutral", next: "line_listen_02",
-      setsFlag: "heardNPCStory"
-    },
-    line_listen_02: {
-      id: "line_listen_02", speaker: "NPC",
-      text: "I only had one thousand dollars. But I really needed it stamped. So I gave him my script. And every last dollar.",
-      emotion: "hesitant", next: "line_listen_03"
-    },
-    line_listen_03: {
-      id: "line_listen_03", speaker: "NPC",
-      text: "There was no stamp. I said — 'There's no stamp.' He said: 'You paid me to READ it. Not to STAMP it. I didn't care for your script. Next time — make sure it's a good story first.'",
-      emotion: "broken", next: "line_listen_04"
-    },
-    line_listen_04: {
-      id: "line_listen_04", speaker: "NARRATOR",
-      text: "A tear forms on the surface of the cloaked figure's mask. It rolls slowly down. Then — it disappears.",
-      emotion: "sad", next: "line_choice"
     },
     line_leave: {
       id: "line_leave", speaker: "NARRATOR",
