@@ -8,6 +8,7 @@ import {
   lineScene_Crowd,
   desertScene_Warrior,
   darknessEvent,
+  pillowScene,
   roundRoom_Monster,
   gardenScene_Stranger,
   gardenScene_MaskFarewell,
@@ -34,6 +35,7 @@ const TREES = {
   line_crowd:     lineScene_Crowd,
   desert_warrior: desertScene_Warrior,
   darkness_event: darknessEvent,
+  pillow_scene:   pillowScene,
   round_room:     roundRoom_Monster,
   garden_stranger:gardenScene_Stranger,
   garden_mask:    gardenScene_MaskFarewell,
@@ -46,6 +48,7 @@ const TRANSITION_TRIGGERS = new Set([
   'TRANSITION_TO_LINE_SCENE',
   'TRANSITION_TO_DESERT',
   'FADE_TO_ROUND_ROOM',
+  'TRANSITION_TO_ROUND_ROOM',
   'TRANSITION_TO_GARDEN',
   'FADE_TO_CREDITS',
   'DARKNESS_EVENT',
@@ -53,20 +56,20 @@ const TRANSITION_TRIGGERS = new Set([
   'ENDING_B',
 ]);
 
-function SceneBackground({ sceneId, activeTriggers, currentLineId, onSceneComplete }) {
+function SceneBackground({ sceneId, activeTriggers, currentLineId }) {
   switch (sceneId) {
     case 'field_lady':     return <FieldScene activeTriggers={activeTriggers} />;
     case 'field_cloaked':  return <FieldCloakedScene activeTriggers={activeTriggers} />;
     case 'line_crowd':     return <LineScene activeTriggers={activeTriggers} />;
     case 'desert_warrior': return <DesertScene activeTriggers={activeTriggers} />;
     case 'darkness_event': return <DarknessScene activeTriggers={activeTriggers} />;
-    case 'pillow_scene':   return <PillowScene onSceneComplete={onSceneComplete} />;
+    case 'pillow_scene':   return <PillowScene activeTriggers={activeTriggers} currentLineId={currentLineId} />;
     case 'round_room':     return <RoundRoomScene activeTriggers={activeTriggers} />;
     case 'garden_stranger':
     case 'garden_mask':    return <GardenScene activeTriggers={activeTriggers} currentLineId={currentLineId} />;
     case 'ending_a':
     case 'ending_b':       return <EndingScene activeTriggers={activeTriggers} />;
-    default:              return <div className="scene scene-fallback" />;
+    default:               return <div className="scene scene-fallback" />;
   }
 }
 
@@ -140,13 +143,6 @@ export default function SceneManager({ onGameEnd }) {
     setActiveTriggers([]);
     setShowStillness(false);
 
-    if (nextId === 'pillow_scene') {
-      setLine(null);
-      setChoices([]);
-      engineRef.current = null;
-      return;
-    }
-
     const tree = TREES[nextId];
     if (!tree) {
       console.error(`[SceneManager] Unknown scene: ${nextId}`);
@@ -215,7 +211,6 @@ export default function SceneManager({ onGameEnd }) {
         sceneId={sceneId}
         activeTriggers={activeTriggers}
         currentLineId={line?.id}
-        onSceneComplete={() => handleSceneComplete(sceneId)}
       />
 
       {/* Scene label */}

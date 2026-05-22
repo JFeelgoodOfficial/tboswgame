@@ -6,6 +6,7 @@ const TRANSITION_CONFIGS = {
   TRANSITION_TO_LINE_SCENE:     { type: 'fade-black', duration: 1500 },
   TRANSITION_TO_DESERT:         { type: 'white-flash', duration: 600 },
   FADE_TO_ROUND_ROOM:           { type: 'fade-black', duration: 2000 },
+  TRANSITION_TO_ROUND_ROOM:     { type: 'fade-black', duration: 1800 },
   TRANSITION_TO_GARDEN:         { type: 'dissolve', duration: 1500 },
   FADE_TO_CREDITS:              { type: 'fade-black', duration: 3000 },
   DARKNESS_EVENT:               { type: 'fade-black', duration: 1200 },

@@ -908,6 +908,52 @@ export const ending_B = {
 };
 
 
+export const pillowScene = {
+  id: "pillow_scene",
+  scene: "PillowScene",
+  startId: "pillow_01",
+  lines: {
+    pillow_01: {
+      id: "pillow_01", speaker: "NARRATOR",
+      text: "The boy and his father stand outside the cottage, both clutching towering stacks of throw pillows. The street hums with approaching footsteps.",
+      emotion: "neutral", next: "pillow_02"
+    },
+    pillow_02: {
+      id: "pillow_02", speaker: "YOUNGER_WOMAN",
+      text: "Please — someone is in danger. We need your help.",
+      emotion: "fearful", next: "pillow_03"
+    },
+    pillow_03: {
+      id: "pillow_03", speaker: "NARRATOR",
+      text: "The boy's hands tighten around the pillows. His father goes rigid beside him. Neither moves.",
+      emotion: "hesitant", next: "pillow_04"
+    },
+    pillow_04: {
+      id: "pillow_04", speaker: "OLDER_WOMAN",
+      text: "Please.",
+      emotion: "broken", next: "pillow_05"
+    },
+    pillow_05: {
+      id: "pillow_05", speaker: "NARRATOR",
+      text: "He wants to move. He wants to help. But to step forward means to drop what he is carrying. He cannot bear the thought.",
+      emotion: "hesitant", next: "pillow_06"
+    },
+    pillow_06: {
+      id: "pillow_06", speaker: "NARRATOR",
+      text: "A blur. The girl arrives — barreling into them in a storm of dust, crashing into them with full force, sending them all sprawling. Pillows scatter everywhere.",
+      emotion: "determined",
+      trigger: "PILLOW_CRASH",
+      next: "pillow_07"
+    },
+    pillow_07: {
+      id: "pillow_07", speaker: "NARRATOR",
+      text: "Something in her urgency unlocks his feet. He moves. He reaches back for the cloaked figure. Together, the three run.",
+      emotion: "determined",
+      trigger: "TRANSITION_TO_ROUND_ROOM"
+    }
+  }
+};
+
 // ============================================================
 // EXPORT ALL
 // ============================================================
@@ -918,6 +964,7 @@ export const ALL_DIALOGUE_TREES = [
   lineScene_Crowd,
   desertScene_Warrior,
   darknessEvent,
+  pillowScene,
   roundRoom_Monster,
   gardenScene_Stranger,
   gardenScene_MaskFarewell,

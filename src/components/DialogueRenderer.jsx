@@ -11,7 +11,10 @@ const SPEAKER_LABELS = {
   STRANGER: 'Stranger',
   CLOAKED_FIGURE: 'Cloaked Figure',
   LADY_IN_WHITE: 'Lady in White',
-  NPC: 'Stranger in Line',
+  NPC:           'Stranger in Line',
+  YOUNGER_WOMAN: 'Woman',
+  OLDER_WOMAN:   'Woman',
+  FATHER:        'Father',
 };
 
 const SPEAKER_ICONS = {
@@ -22,7 +25,10 @@ const SPEAKER_ICONS = {
   STRANGER: '◉',
   CLOAKED_FIGURE: '◑',
   LADY_IN_WHITE: '✿',
-  NPC: '○',
+  NPC:           '○',
+  YOUNGER_WOMAN: '◇',
+  OLDER_WOMAN:   '◇',
+  FATHER:        '○',
 };
 
 export default function DialogueRenderer({ line, choices, onAdvance, onChoice }) {
