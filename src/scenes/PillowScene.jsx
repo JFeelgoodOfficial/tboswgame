@@ -53,7 +53,7 @@ export default function PillowScene({ onSceneComplete }) {
     <div className="scene pillow-scene">
       <img
         className="scene-bg"
-        src={phase === 1 ? '/images/tbosw-pillow1.jpg' : '/images/tbosw-pillows2.png'}
+        src={phase === 1 ? '/images/tbosw-pillow.jpg' : '/images/tbosw-pillows2.png'}
         style={{ opacity: imgOpacity, transition: 'opacity 0.35s ease', objectPosition: 'center top' }}
         alt=""
       />

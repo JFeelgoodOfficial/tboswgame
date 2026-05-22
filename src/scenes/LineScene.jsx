@@ -2,13 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import './scenes.css';
 
 const LINE_IMAGES = {
-  waiting:   '/images/tbosw-line1.jpg',
-  listening: '/images/tbosw-peterhivets.jpg',
-  impact:    '/images/tbosw-line2.jpg',
-  together:  '/images/tbosw-line3.jpg',
+  waiting:  '/images/tbosw-line1.jpg',
+  impact:   '/images/tbosw-line2.jpg',
+  together: '/images/tbosw-line3.jpg',
+  running:  '/images/tbosw-boygirlcloakruntowarrior.png',
 };
-
-const NPC_LINES = new Set(['line_listen', 'line_listen_02', 'line_listen_03', 'line_listen_04']);
 
 function DustBurst() {
   const particles = Array.from({ length: 12 }, (_, i) => ({
@@ -35,11 +33,11 @@ function DustBurst() {
   );
 }
 
-export default function LineScene({ activeTriggers = [], currentLineId }) {
+export default function LineScene({ activeTriggers = [] }) {
   const [lineState, setLineState] = useState('waiting');
   const [imgOpacity, setImgOpacity] = useState(1);
   const hasImpacted = useRef(false);
-  const activeState = useRef('waiting');
+  const hasLeft = useRef(false);
 
   function dissolve(fn, delay = 0) {
     setTimeout(() => {
@@ -49,19 +47,17 @@ export default function LineScene({ activeTriggers = [], currentLineId }) {
   }
 
   useEffect(() => {
-    if (NPC_LINES.has(currentLineId) && activeState.current === 'waiting') {
-      dissolve(() => { activeState.current = 'listening'; setLineState('listening'); });
-    }
-    if (currentLineId === 'line_choice' && activeState.current === 'listening') {
-      dissolve(() => { activeState.current = 'waiting'; setLineState('waiting'); });
-    }
-  }, [currentLineId]);
-
-  useEffect(() => {
     if (activeTriggers.includes('SCREEN_SHAKE') && !hasImpacted.current) {
       hasImpacted.current = true;
-      dissolve(() => { activeState.current = 'impact'; setLineState('impact'); });
-      dissolve(() => { activeState.current = 'together'; setLineState('together'); }, 1700);
+      dissolve(() => setLineState('impact'));
+      dissolve(() => setLineState('together'), 1700);
+    }
+  }, [activeTriggers]);
+
+  useEffect(() => {
+    if (activeTriggers.includes('TRANSITION_TO_DESERT') && !hasLeft.current) {
+      hasLeft.current = true;
+      dissolve(() => setLineState('running'), 400);
     }
   }, [activeTriggers]);
 

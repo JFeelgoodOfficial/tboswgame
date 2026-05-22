@@ -18,6 +18,7 @@ import DialogueRenderer from './DialogueRenderer.jsx';
 import TransitionOverlay from '../effects/TransitionOverlay.jsx';
 import StillnessMechanic from '../effects/StillnessMechanic.jsx';
 import FieldScene from '../scenes/FieldScene.jsx';
+import FieldCloakedScene from '../scenes/FieldCloakedScene.jsx';
 import LineScene from '../scenes/LineScene.jsx';
 import DesertScene from '../scenes/DesertScene.jsx';
 import DarknessScene from '../scenes/DarknessScene.jsx';
@@ -54,17 +55,17 @@ const TRANSITION_TRIGGERS = new Set([
 
 function SceneBackground({ sceneId, activeTriggers, currentLineId, onSceneComplete }) {
   switch (sceneId) {
-    case 'field_lady':
-    case 'field_cloaked': return <FieldScene activeTriggers={activeTriggers} />;
-    case 'line_crowd':    return <LineScene activeTriggers={activeTriggers} currentLineId={currentLineId} />;
-    case 'desert_warrior':return <DesertScene activeTriggers={activeTriggers} />;
-    case 'darkness_event':return <DarknessScene activeTriggers={activeTriggers} />;
-    case 'pillow_scene':  return <PillowScene onSceneComplete={onSceneComplete} />;
-    case 'round_room':    return <RoundRoomScene activeTriggers={activeTriggers} />;
+    case 'field_lady':     return <FieldScene activeTriggers={activeTriggers} />;
+    case 'field_cloaked':  return <FieldCloakedScene activeTriggers={activeTriggers} />;
+    case 'line_crowd':     return <LineScene activeTriggers={activeTriggers} />;
+    case 'desert_warrior': return <DesertScene activeTriggers={activeTriggers} />;
+    case 'darkness_event': return <DarknessScene activeTriggers={activeTriggers} />;
+    case 'pillow_scene':   return <PillowScene onSceneComplete={onSceneComplete} />;
+    case 'round_room':     return <RoundRoomScene activeTriggers={activeTriggers} />;
     case 'garden_stranger':
-    case 'garden_mask':   return <GardenScene activeTriggers={activeTriggers} />;
+    case 'garden_mask':    return <GardenScene activeTriggers={activeTriggers} currentLineId={currentLineId} />;
     case 'ending_a':
-    case 'ending_b':      return <EndingScene activeTriggers={activeTriggers} />;
+    case 'ending_b':       return <EndingScene activeTriggers={activeTriggers} />;
     default:              return <div className="scene scene-fallback" />;
   }
 }
