@@ -3,7 +3,7 @@ import './scenes.css';
 
 const IMAGES = {
   walking:     '/images/tbosw-boywalkswithcloaktocrowd.png',
-  approaching: '/images/tbosw-peterhivets.jpg',
+  approaching: '/images/tbosw-peterhivets1.jpg',
   closeup:     '/images/tbosw-peterhivets2.png',
 };
 

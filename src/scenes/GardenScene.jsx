@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import './scenes.css';
 
 const IMAGES = {
-  meeting:    '/images/tbosw-stranger.jpg',
+  meeting:    '/images/tbosw-stranger1.jpg',
   plants:     '/images/tbosw-stranger2.png',
   leaving:    '/images/tbosw-stranger3.png',
   hugging:    '/images/tbosw-stranger4.png',
