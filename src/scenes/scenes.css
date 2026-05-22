@@ -8,7 +8,6 @@
   background: #000;
 }
 
-/* Full-bleed pixel art image */
 .scene-bg {
   position: absolute;
   inset: 0;
@@ -21,7 +20,6 @@
   z-index: 1;
 }
 
-/* Vignette for depth */
 .scene-vignette {
   position: absolute;
   inset: 0;
@@ -30,7 +28,6 @@
   z-index: 2;
 }
 
-/* ── Screen shake ── */
 @keyframes screenShake {
   0%  { transform: translate(0, 0); }
   15% { transform: translate(-8px, 2px); }
@@ -48,7 +45,6 @@
    ════════════════════════════════════════════════ */
 .field-scene { background: #0a0d1a; }
 
-/* River shimmer overlay */
 .river-shimmer-overlay {
   position: absolute;
   left: 35%;
@@ -71,7 +67,6 @@
   to   { transform: translateX(20px); }
 }
 
-/* Dandelion seeds */
 .dandelion {
   position: absolute;
   bottom: 35%;
@@ -93,18 +88,24 @@
    ════════════════════════════════════════════════ */
 .line-scene { background: #1a1608; }
 
-/* Dust impact particles */
+.dust-burst-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 4;
+}
 .dust-particle {
   position: absolute;
   border-radius: 50%;
   background: rgba(200, 180, 140, 0.75);
   animation: dustBurst 0.6s ease-out forwards;
-  z-index: 4;
   pointer-events: none;
 }
 @keyframes dustBurst {
-  0%   { transform: translate(0, 0) scale(1); opacity: 1; }
-  100% { transform: translate(var(--dx), var(--dy)) scale(0.2); opacity: 0; }
+  0%   { transform: rotate(var(--angle)) translateX(0) scale(1); opacity: 1; }
+  100% { transform: rotate(var(--angle)) translateX(var(--dist)) scale(0.2); opacity: 0; }
 }
 
 /* ════════════════════════════════════════════════
@@ -112,7 +113,6 @@
    ════════════════════════════════════════════════ */
 .desert-scene { background: #0e0805; }
 
-/* Embrace glow */
 .embrace-glow {
   position: absolute;
   left: 30%;
@@ -129,18 +129,16 @@
   50% { opacity: 1; }
 }
 
-/* Ash particles */
-.ash-particle {
+.vortex-pulse {
   position: absolute;
-  border-radius: 50%;
-  background: rgba(180, 140, 80, 0.7);
-  animation: ashRise linear forwards;
-  z-index: 4;
+  inset: 0;
+  background: conic-gradient(from 0deg at 45% 60%, transparent 0deg, rgba(180, 120, 60, 0.12) 60deg, transparent 120deg);
+  animation: vortexSpin 3s linear infinite;
   pointer-events: none;
+  z-index: 3;
 }
-@keyframes ashRise {
-  0%   { transform: translate(0, 0) scale(1); opacity: 1; }
-  100% { transform: translate(var(--dx), var(--dy)) scale(0.3); opacity: 0; }
+@keyframes vortexSpin {
+  to { transform: rotate(360deg); }
 }
 
 /* ════════════════════════════════════════════════
@@ -148,61 +146,58 @@
    ════════════════════════════════════════════════ */
 .darkness-scene { background: #000; }
 
-.dark-stars {
+.ember-container {
   position: absolute;
   inset: 0;
-  z-index: 1;
-  background-image:
-    radial-gradient(1px 1px at 8% 12%, rgba(255,255,255,0.3) 0%, transparent 100%),
-    radial-gradient(1px 1px at 22% 34%, rgba(255,255,255,0.2) 0%, transparent 100%),
-    radial-gradient(1px 1px at 45% 18%, rgba(255,255,255,0.25) 0%, transparent 100%),
-    radial-gradient(1px 1px at 60% 42%, rgba(255,255,255,0.2) 0%, transparent 100%),
-    radial-gradient(1px 1px at 78% 8%, rgba(255,255,255,0.3) 0%, transparent 100%),
-    radial-gradient(1px 1px at 88% 55%, rgba(255,255,255,0.2) 0%, transparent 100%),
-    radial-gradient(1px 1px at 35% 68%, rgba(255,255,255,0.15) 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 55% 25%, rgba(220,200,255,0.25) 0%, transparent 100%),
-    radial-gradient(1px 1px at 15% 75%, rgba(255,255,255,0.12) 0%, transparent 100%);
-}
-
-.dark-vignette {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  background: radial-gradient(ellipse at center,
-    transparent 15%,
-    rgba(5, 0, 12, 0.4) 45%,
-    rgba(5, 0, 12, 0.85) 75%,
-    rgba(0, 0, 5, 0.98) 100%
-  );
-  animation: vignetteBreath 4s ease-in-out infinite;
-}
-@keyframes vignetteBreath {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.8; }
-}
-
-.dark-cloak {
-  position: absolute;
-  width: 6%;
-  height: 30%;
-  bottom: 35%;
-  left: 47%;
-  background: rgba(20, 15, 25, 0.5);
-  clip-path: polygon(30% 0%, 70% 0%, 75% 15%, 80% 100%, 20% 100%, 25% 15%);
-  filter: blur(2px);
+  pointer-events: none;
   z-index: 3;
 }
+.ember {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 180, 60, 0.7);
+  animation: emberDrift linear infinite;
+}
+@keyframes emberDrift {
+  0%   { transform: translateY(0) translateX(0); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 0.6; }
+  100% { transform: translateY(-80vh) translateX(var(--drift)); opacity: 0; }
+}
 
-.darkness-collapse {
+.darkness-swirl {
   position: absolute;
   inset: 0;
-  background: #000;
-  z-index: 10;
-  animation: collapseIn 1s ease forwards;
+  background: conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(40, 20, 60, 0.15) 90deg, transparent 180deg);
+  animation: swirlRotate 12s linear infinite;
+  pointer-events: none;
+  z-index: 3;
+  mix-blend-mode: multiply;
 }
-@keyframes collapseIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+@keyframes swirlRotate {
+  to { transform: rotate(360deg); }
+}
+
+/* ════════════════════════════════════════════════
+   PILLOW SCENE
+   ════════════════════════════════════════════════ */
+.pillow-scene { background: #0a060c; }
+
+.pillow-scatter {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+.scatter-pillow {
+  position: absolute;
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  animation: pillowFly both;
+  animation-fill-mode: both;
+}
+@keyframes pillowFly {
+  0%   { transform: rotate(var(--angle)) translateX(0) scale(1); opacity: 1; }
+  100% { transform: rotate(var(--angle)) translateX(var(--dist)) scale(0); opacity: 0; }
 }
 
 /* ════════════════════════════════════════════════
@@ -210,7 +205,6 @@
    ════════════════════════════════════════════════ */
 .round-room-scene { background: #06060c; }
 
-/* Spotlight flicker */
 .spotlight-flicker {
   position: absolute;
   top: 0;
@@ -229,7 +223,25 @@
   55%       { opacity: 0.9; }
 }
 
-/* Living shadows overlay */
+.tendrils-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+.tendril-glow {
+  position: absolute;
+  width: 2px;
+  height: 20%;
+  background: linear-gradient(to bottom, transparent, rgba(80, 120, 255, 0.4), transparent);
+  filter: blur(1px);
+  animation: tendrilPulse 1.8s ease-in-out infinite;
+}
+@keyframes tendrilPulse {
+  0%, 100% { opacity: 0.2; transform: scaleY(0.8); }
+  50%       { opacity: 0.8; transform: scaleY(1.1); }
+}
+
 .room-shadows {
   position: absolute;
   inset: 0;
@@ -257,7 +269,7 @@
   50%       { opacity: 0.85; }
 }
 
-.round-room-scene.pulsing .room-shadows {
+.room-shadows.pulsing {
   animation: monsterPulse 0.8s ease forwards;
 }
 @keyframes monsterPulse {
@@ -266,12 +278,11 @@
   100% { opacity: 1; }
 }
 
-/* Shadow boy reveal overlay */
 .shadow-reveal {
   position: absolute;
-  bottom: 5%;
-  left: 35%;
-  right: 35%;
+  bottom: 2%;
+  left: 32%;
+  right: 32%;
   height: 25%;
   background: radial-gradient(ellipse at center, rgba(80, 100, 200, 0.15) 0%, transparent 70%);
   animation: shadowPulse 2s ease-in-out infinite;
@@ -283,7 +294,6 @@
   50%       { opacity: 0.8; }
 }
 
-/* Fracture effect */
 .fracture-overlay {
   position: absolute;
   inset: 0;
@@ -323,7 +333,6 @@
    ════════════════════════════════════════════════ */
 .garden-scene { background: #0c0805; }
 
-/* Hug warmth glow */
 .hug-warmth {
   position: absolute;
   inset: 0;
@@ -337,7 +346,6 @@
   50%       { opacity: 1; }
 }
 
-/* Stranger departure darkening */
 .stranger-depart {
   position: absolute;
   top: 10%;
@@ -352,7 +360,6 @@
 }
 .stranger-depart.active { opacity: 1; }
 
-/* Cloak dissolve darkening */
 .cloak-fade {
   position: absolute;
   inset: 0;
@@ -363,86 +370,28 @@
 }
 .cloak-fade.active { background: rgba(0, 0, 0, 0.25); }
 
-/* Mask object */
-.mask-object {
-  position: absolute;
-  width: 3%;
-  height: 4%;
-  background: rgba(80, 70, 50, 0.8);
-  border: 1px solid rgba(150, 130, 90, 0.5);
-  clip-path: polygon(50% 0%, 90% 25%, 90% 75%, 50% 100%, 10% 75%, 10% 25%);
-  transition: bottom 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97), transform 0.3s;
-  z-index: 4;
-  pointer-events: none;
-}
-.mask-object.falling { bottom: 90%; transform: rotate(15deg); }
-.mask-object.landed  { transform: rotate(0deg); animation: maskBounce 0.5s ease; }
-@keyframes maskBounce {
-  0%   { transform: rotate(15deg) translateY(0); }
-  30%  { transform: rotate(-5deg) translateY(-8px); }
-  60%  { transform: rotate(3deg) translateY(-3px); }
-  100% { transform: rotate(0deg) translateY(0); }
-}
-
 /* ════════════════════════════════════════════════
    ENDING SCENE
    ════════════════════════════════════════════════ */
 .ending-scene { background: #080c12; }
 
-.ending-sky {
+.ending-star-shimmer {
   position: absolute;
   inset: 0;
-  bottom: 36%;
-  z-index: 1;
-  background: linear-gradient(to bottom,
-    #080c12 0%,
-    #0e1620 25%,
-    #142030 50%,
-    #1a2a3c 70%,
-    #2a3a4a 88%,
-    #3a4a56 100%
-  );
-}
-
-.ending-horizon {
-  position: absolute;
-  left: 0; right: 0;
-  bottom: 35%;
-  height: 5%;
+  background-image:
+    radial-gradient(1px 1px at 15% 20%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 35% 12%, rgba(200,220,255,0.4) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 55% 8%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 72% 18%, rgba(200,220,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 28%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 28% 35%, rgba(255,255,255,0.3) 0%, transparent 100%);
+  animation: starShimmer 4s ease-in-out infinite;
+  pointer-events: none;
   z-index: 2;
-  background: linear-gradient(to top, rgba(100, 140, 160, 0.3), transparent);
-  filter: blur(5px);
 }
-
-.ending-ground {
-  position: absolute;
-  left: 0; right: 0;
-  bottom: 0;
-  height: 38%;
-  z-index: 1;
-  background: linear-gradient(to top,
-    #06080a 0%,
-    #0c1014 30%,
-    #10161a 60%,
-    #141e24 100%
-  );
-}
-
-.ending-mist {
-  position: absolute;
-  left: 0; right: 0;
-  bottom: 30%;
-  height: 20%;
-  z-index: 2;
-  background: radial-gradient(ellipse at center,
-    rgba(140, 170, 190, 0.12) 0%,
-    transparent 70%
-  );
-  animation: mistDrift 8s ease-in-out infinite;
-}
-@keyframes mistDrift {
-  0%, 100% { opacity: 0.6; transform: scaleX(1); }
-  50%       { opacity: 1; transform: scaleX(1.08); }
+@keyframes starShimmer {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
 }
 
 .ending-particle {

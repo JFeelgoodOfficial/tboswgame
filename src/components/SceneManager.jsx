@@ -21,6 +21,7 @@ import FieldScene from '../scenes/FieldScene.jsx';
 import LineScene from '../scenes/LineScene.jsx';
 import DesertScene from '../scenes/DesertScene.jsx';
 import DarknessScene from '../scenes/DarknessScene.jsx';
+import PillowScene from '../scenes/PillowScene.jsx';
 import RoundRoomScene from '../scenes/RoundRoomScene.jsx';
 import GardenScene from '../scenes/GardenScene.jsx';
 import EndingScene from '../scenes/EndingScene.jsx';
@@ -51,13 +52,14 @@ const TRANSITION_TRIGGERS = new Set([
   'ENDING_B',
 ]);
 
-function SceneBackground({ sceneId, activeTriggers }) {
+function SceneBackground({ sceneId, activeTriggers, currentLineId, onSceneComplete }) {
   switch (sceneId) {
     case 'field_lady':
     case 'field_cloaked': return <FieldScene activeTriggers={activeTriggers} />;
-    case 'line_crowd':    return <LineScene activeTriggers={activeTriggers} />;
+    case 'line_crowd':    return <LineScene activeTriggers={activeTriggers} currentLineId={currentLineId} />;
     case 'desert_warrior':return <DesertScene activeTriggers={activeTriggers} />;
     case 'darkness_event':return <DarknessScene activeTriggers={activeTriggers} />;
+    case 'pillow_scene':  return <PillowScene onSceneComplete={onSceneComplete} />;
     case 'round_room':    return <RoundRoomScene activeTriggers={activeTriggers} />;
     case 'garden_stranger':
     case 'garden_mask':   return <GardenScene activeTriggers={activeTriggers} />;
@@ -74,6 +76,7 @@ function getSceneLabel(sceneId) {
     line_crowd:     'The Line',
     desert_warrior: 'The Desert of the Warrior',
     darkness_event: 'The Dark',
+    pillow_scene:   '',
     round_room:     'The Round Room',
     garden_stranger:'The Garden',
     garden_mask:    'The Garden',
@@ -129,8 +132,18 @@ export default function SceneManager({ onGameEnd }) {
 
   const loadScene = useCallback(async (nextId, transitionTrigger) => {
     if (transitionTrigger && transitionRef.current) {
-      // await resolves when screen is fully obscured (midpoint of transition)
       await doSceneTransition(transitionTrigger);
+    }
+
+    setSceneId(nextId);
+    setActiveTriggers([]);
+    setShowStillness(false);
+
+    if (nextId === 'pillow_scene') {
+      setLine(null);
+      setChoices([]);
+      engineRef.current = null;
+      return;
     }
 
     const tree = TREES[nextId];
@@ -139,10 +152,6 @@ export default function SceneManager({ onGameEnd }) {
       onGameEnd?.();
       return;
     }
-
-    setSceneId(nextId);
-    setActiveTriggers([]);
-    setShowStillness(false);
 
     const engine = new DialogueEngine(
       tree,
@@ -201,7 +210,12 @@ export default function SceneManager({ onGameEnd }) {
 
   return (
     <div className="scene-manager">
-      <SceneBackground sceneId={sceneId} activeTriggers={activeTriggers} />
+      <SceneBackground
+        sceneId={sceneId}
+        activeTriggers={activeTriggers}
+        currentLineId={line?.id}
+        onSceneComplete={() => handleSceneComplete(sceneId)}
+      />
 
       {/* Scene label */}
       {label && (
