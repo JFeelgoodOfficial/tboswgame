@@ -6,8 +6,8 @@ const IMAGES = {
   plants:     '/images/tbosw-stranger2.png',
   leaving:    '/images/tbosw-stranger3.png',
   hugging:    '/images/tbosw-stranger4.png',
-  maskUp:     '/images/tbosw-cloakremoveshismask2.png',
-  dissolving: '/images/tbosw-cloakremoveshismask1.jpg',
+  maskUp:     '/images/tbosw-cloakremoveshismask1.jpg',
+  dissolving: '/images/tbosw-cloakremoveshismask2.png',
   maskDown:   '/images/tbosw-cloakremoveshismask3.png',
 };
 
