@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { DialogueEngine } from '../engine/DialogueEngine.js';
+import ContinueButton from './ContinueButton.jsx';
 import {
   FLAGS,
   SCENE_MANIFEST,
@@ -28,6 +29,14 @@ import RoundRoomScene from '../scenes/RoundRoomScene.jsx';
 import GardenScene from '../scenes/GardenScene.jsx';
 import EndingScene from '../scenes/EndingScene.jsx';
 import './SceneManager.css';
+
+function getButtonMode(line, choices, showStillness, isTyping) {
+  if (showStillness) return 'hidden';
+  if (!line) return 'hidden';
+  if (choices.length > 0) return 'choice';
+  if (isTyping) return 'typing';
+  return 'ready';
+}
 
 const TREES = {
   field_lady:     fieldScene_LadyInWhite,
@@ -108,9 +117,11 @@ export default function SceneManager({ onGameEnd }) {
   const [choices, setChoices] = useState([]);
   const [activeTriggers, setActiveTriggers] = useState([]);
   const [showStillness, setShowStillness] = useState(false);
+  const [isTyping, setIsTyping] = useState(true);
   const engineRef = useRef(null);
   const transitionRef = useRef(null);
   const pendingNextScene = useRef(null);
+  const snapRef = useRef(null);
 
   const handleTrigger = useCallback((trigger) => {
     setActiveTriggers(prev => [...new Set([...prev, trigger])]);
@@ -198,6 +209,11 @@ export default function SceneManager({ onGameEnd }) {
     handleAdvance();
   }
 
+  // Reset typing state whenever a new line loads
+  useEffect(() => {
+    setIsTyping(true);
+  }, [line?.id]);
+
   // Init
   useEffect(() => {
     loadScene('field_lady', null);
@@ -234,8 +250,16 @@ export default function SceneManager({ onGameEnd }) {
           choices={choices}
           onAdvance={handleAdvance}
           onChoice={handleChoice}
+          onTextComplete={() => setIsTyping(false)}
+          onRegisterSnap={(fn) => { snapRef.current = fn; }}
         />
       )}
+
+      <ContinueButton
+        mode={getButtonMode(line, choices, showStillness, isTyping)}
+        onSnap={() => { setIsTyping(false); snapRef.current?.(); }}
+        onAdvance={handleAdvance}
+      />
 
       <TransitionOverlay ref={transitionRef} />
     </div>
