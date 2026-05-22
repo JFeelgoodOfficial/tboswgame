@@ -31,7 +31,14 @@ const SPEAKER_ICONS = {
   FATHER:        '○',
 };
 
-export default function DialogueRenderer({ line, choices, onAdvance, onChoice }) {
+export default function DialogueRenderer({
+  line,
+  choices,
+  onAdvance,
+  onChoice,
+  onTextComplete,
+  onRegisterSnap,
+}) {
   const [displayed, setDisplayed] = useState('');
   const [done, setDone] = useState(false);
   const [showChoices, setShowChoices] = useState(false);
@@ -66,23 +73,26 @@ export default function DialogueRenderer({ line, choices, onAdvance, onChoice })
     return () => clearInterval(timerRef.current);
   }, [line?.id]);
 
+  // Register snap function so ContinueButton can trigger it
+  useEffect(() => {
+    onRegisterSnap?.(() => {
+      clearInterval(timerRef.current);
+      setDisplayed(fullText.current);
+      setDone(true);
+    });
+  }, [line?.id]);
+
+  // Notify parent when typewriter finishes
+  useEffect(() => {
+    if (done) onTextComplete?.();
+  }, [done]);
+
   useEffect(() => {
     if (done && choices.length > 0) {
       const t = setTimeout(() => setShowChoices(true), 200);
       return () => clearTimeout(t);
     }
   }, [done, choices.length]);
-
-  function handleClick() {
-    if (!done) {
-      clearInterval(timerRef.current);
-      setDisplayed(fullText.current);
-      setDone(true);
-      return;
-    }
-    if (choices.length > 0) return;
-    onAdvance();
-  }
 
   if (!line) return null;
 
@@ -92,7 +102,7 @@ export default function DialogueRenderer({ line, choices, onAdvance, onChoice })
   const icon = SPEAKER_ICONS[line.speaker] || '○';
 
   return (
-    <div className={`dialogue-overlay emotion-${line.emotion || 'neutral'}`} onClick={handleClick}>
+    <div className={`dialogue-overlay emotion-${line.emotion || 'neutral'}`}>
       <div className={`dialogue-box ${isNarrator ? 'narrator' : ''} ${isPlayer ? 'player' : ''}`}>
         {!isNarrator && label && (
           <div className="dialogue-speaker">
@@ -104,13 +114,10 @@ export default function DialogueRenderer({ line, choices, onAdvance, onChoice })
           {displayed}
           {!done && <span className="cursor">▌</span>}
         </div>
-        {done && choices.length === 0 && (
-          <div className="continue-indicator">▼</div>
-        )}
       </div>
 
       {showChoices && (
-        <div className="choices-container" onClick={e => e.stopPropagation()}>
+        <div className="choices-container">
           {choices.map((c, i) => (
             <button
               key={i}

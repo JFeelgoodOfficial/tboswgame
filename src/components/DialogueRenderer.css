@@ -26,8 +26,6 @@
   line-height: 1.65;
   letter-spacing: 0.03em;
   box-shadow: inset 0 0 0 1px rgba(200, 185, 155, 0.12), 0 4px 32px rgba(0,0,0,0.7);
-  pointer-events: auto;
-  cursor: pointer;
 }
 
 /* corner ornaments */
@@ -107,21 +105,6 @@
 
 @keyframes blink {
   50% { opacity: 0; }
-}
-
-/* ── Continue indicator ── */
-.continue-indicator {
-  position: absolute;
-  bottom: 0.5rem;
-  right: 1.2rem;
-  color: rgba(200, 185, 155, 0.6);
-  font-size: 0.65rem;
-  animation: bob 1.1s ease-in-out infinite;
-}
-
-@keyframes bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(3px); }
 }
 
 /* ── Choices ── */
