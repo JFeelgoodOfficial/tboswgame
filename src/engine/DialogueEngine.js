@@ -7,6 +7,10 @@ export class DialogueEngine {
     this.onTrigger = onTrigger || (() => {});
     this.onFlagSet = onFlagSet || (() => {});
     this.onSceneComplete = onSceneComplete || (() => {});
+  }
+
+  // Call after setting engineRef so trigger handlers can safely read it
+  start() {
     this._fireTriggerForLine(this.getLine(this.currentId));
   }
 
@@ -20,7 +24,8 @@ export class DialogueEngine {
 
   getChoices() {
     const line = this.getCurrentLine();
-    return line?.choices || [];
+    const choices = line?.choices || [];
+    return choices.filter(c => !c.condition || c.condition(FLAGS));
   }
 
   advance(choiceIndex) {
@@ -31,13 +36,13 @@ export class DialogueEngine {
 
     if (line.choices && line.choices.length > 0) {
       if (choiceIndex === undefined || choiceIndex === null) return;
-      const choice = line.choices[choiceIndex];
+      const visibleChoices = this.getChoices();
+      const choice = visibleChoices[choiceIndex];
       if (!choice) return;
       nextId = choice.next;
     } else if (line.next) {
-      nextId = line.next;
+      nextId = typeof line.next === 'function' ? line.next(FLAGS) : line.next;
     } else {
-      // Terminal line — apply its own flag before completing
       this._applyFlag(line);
       this.onSceneComplete();
       return;
@@ -84,6 +89,6 @@ export class DialogueEngine {
   reset(tree) {
     this.tree = tree;
     this.currentId = tree.startId;
-    this._fireTriggerForLine(this.getLine(this.currentId));
+    this.start();
   }
 }

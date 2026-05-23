@@ -30,9 +30,10 @@ import GardenScene from '../scenes/GardenScene.jsx';
 import EndingScene from '../scenes/EndingScene.jsx';
 import './SceneManager.css';
 
-function getButtonMode(line, choices, showStillness, isTyping) {
+function getButtonMode(line, choices, showStillness, isTyping, activeTriggers) {
   if (showStillness) return 'hidden';
   if (!line) return 'hidden';
+  if (activeTriggers.includes('CREDITS_ROLL')) return 'hidden';
   if (choices.length > 0) return 'choice';
   if (isTyping) return 'typing';
   return 'ready';
@@ -60,12 +61,12 @@ const TRANSITION_TRIGGERS = new Set([
   'TRANSITION_TO_ROUND_ROOM',
   'TRANSITION_TO_GARDEN',
   'FADE_TO_CREDITS',
-  'DARKNESS_EVENT',
+  'FADE_TO_DARKNESS',
   'ENDING_A',
   'ENDING_B',
 ]);
 
-function SceneBackground({ sceneId, activeTriggers, currentLineId }) {
+function SceneBackground({ sceneId, activeTriggers, currentLineId, onComplete }) {
   switch (sceneId) {
     case 'field_lady':     return <FieldScene activeTriggers={activeTriggers} currentLineId={currentLineId} />;
     case 'field_cloaked':  return <FieldCloakedScene activeTriggers={activeTriggers} />;
@@ -77,7 +78,7 @@ function SceneBackground({ sceneId, activeTriggers, currentLineId }) {
     case 'garden_stranger':
     case 'garden_mask':    return <GardenScene activeTriggers={activeTriggers} currentLineId={currentLineId} />;
     case 'ending_a':
-    case 'ending_b':       return <EndingScene activeTriggers={activeTriggers} />;
+    case 'ending_b':       return <EndingScene activeTriggers={activeTriggers} onComplete={onComplete} />;
     default:               return <div className="scene scene-fallback" />;
   }
 }
@@ -89,7 +90,7 @@ function getSceneLabel(sceneId) {
     line_crowd:     'The Line',
     desert_warrior: 'The Desert of the Warrior',
     darkness_event: 'The Dark',
-    pillow_scene:   '',
+    pillow_scene:   'Outside the Cottage',
     round_room:     'The Round Room',
     garden_stranger:'The Garden',
     garden_mask:    'The Garden',
@@ -103,7 +104,6 @@ function getNextSceneId(currentId) {
   const manifest = SCENE_MANIFEST.find(s => s.id === currentId);
   if (!manifest) return null;
 
-  // Ending branches on pickedUpMask
   if (currentId === 'garden_mask') {
     return FLAGS.pickedUpMask === true ? 'ending_a' : 'ending_b';
   }
@@ -131,7 +131,6 @@ export default function SceneManager({ onGameEnd }) {
     }
 
     if (TRANSITION_TRIGGERS.has(trigger)) {
-      // Store trigger for scene change; scene change happens after transition mid-point
       pendingNextScene.current = trigger;
     }
   }, []);
@@ -168,11 +167,15 @@ export default function SceneManager({ onGameEnd }) {
       () => handleSceneComplete(nextId),
     );
     engineRef.current = engine;
+    engine.start(); // deferred so engineRef is set before trigger handlers fire
     setLine(engine.getCurrentLine());
     setChoices(engine.getChoices());
-  }, [handleTrigger, handleFlagSet]);
+  }, [handleTrigger, handleFlagSet, onGameEnd]);
 
   function handleSceneComplete(currentSceneId) {
+    // Ending scenes delegate onGameEnd to EndingScene via onComplete prop
+    if (currentSceneId === 'ending_a' || currentSceneId === 'ending_b') return;
+
     const nextId = getNextSceneId(currentSceneId);
     if (!nextId) {
       onGameEnd?.();
@@ -209,12 +212,10 @@ export default function SceneManager({ onGameEnd }) {
     handleAdvance();
   }
 
-  // Reset typing state whenever a new line loads
   useEffect(() => {
     setIsTyping(true);
   }, [line?.id]);
 
-  // Init
   useEffect(() => {
     loadScene('field_lady', null);
   }, []);
@@ -227,9 +228,9 @@ export default function SceneManager({ onGameEnd }) {
         sceneId={sceneId}
         activeTriggers={activeTriggers}
         currentLineId={line?.id}
+        onComplete={onGameEnd}
       />
 
-      {/* Scene label */}
       {label && (
         <div className="scene-label">
           <span className="scene-label-deco">◆──</span>
@@ -238,12 +239,10 @@ export default function SceneManager({ onGameEnd }) {
         </div>
       )}
 
-      {/* Stillness mechanic */}
       {showStillness && (
         <StillnessMechanic onComplete={handleStillnessComplete} />
       )}
 
-      {/* Dialogue */}
       {line && (
         <DialogueRenderer
           line={line}
@@ -256,7 +255,7 @@ export default function SceneManager({ onGameEnd }) {
       )}
 
       <ContinueButton
-        mode={getButtonMode(line, choices, showStillness, isTyping)}
+        mode={getButtonMode(line, choices, showStillness, isTyping, activeTriggers)}
         onSnap={() => { setIsTyping(false); snapRef.current?.(); }}
         onAdvance={handleAdvance}
       />

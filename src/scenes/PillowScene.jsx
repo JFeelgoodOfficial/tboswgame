@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import './scenes.css';
 
 const PILLOW_IMAGES = {
@@ -16,7 +16,7 @@ function getImageState(lineId, activeTriggers) {
 }
 
 function PillowScatter() {
-  const pillows = Array.from({ length: 10 }, (_, i) => ({
+  const pillows = useMemo(() => Array.from({ length: 10 }, (_, i) => ({
     id: i,
     color: ['#7a8fd4','#c46060','#6aaa72','#c4a23a','#9a6ab8','#d4824a','#5a9ab8','#b86a7a','#c4c060','#7ab8a8'][i],
     angle: (i / 10) * 360 + (Math.random() - 0.5) * 25,
@@ -26,7 +26,8 @@ function PillowScatter() {
     startX: 35 + Math.random() * 30,
     startY: 35 + Math.random() * 30,
     delay: Math.random() * 0.25,
-  }));
+  })), []);
+
   return (
     <div className="pillow-scatter">
       {pillows.map(p => (
