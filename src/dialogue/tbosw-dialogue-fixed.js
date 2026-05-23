@@ -784,16 +784,16 @@ export const gardenScene_MaskFarewell = {
       emotion: "quiet", next: "mask_02"
     },
     mask_02: {
-      id: "mask_02", speaker: "GIRL",
-      text: "I think he needed a hug too.",
-      emotion: "warm", next: "mask_03"
-    },
-    mask_03: {
-      id: "mask_03", speaker: "NARRATOR",
+      id: "mask_02", speaker: "NARRATOR",
       text: "Without a word, she wraps her arms around you both. The warmth presses in — not demanding, not forcing. Just there.",
       emotion: "warm",
       trigger: "HUG_ANIMATION",
-      next: "mask_04"
+      next: "mask_03"
+    },
+    mask_03: {
+      id: "mask_03", speaker: "GIRL",
+      text: "I think he needed a hug too.",
+      emotion: "warm", next: "mask_04"
     },
     mask_04: {
       id: "mask_04", speaker: "CLOAKED_FIGURE",
