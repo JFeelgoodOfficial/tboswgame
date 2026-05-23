@@ -39,6 +39,9 @@ export default function FieldScene({ activeTriggers = [], currentLineId }) {
     if (currentLineId === 'lady_03' && activeState.current === 'arrival') {
       dissolveToState('approaching');
     }
+    if (currentLineId === 'lady_cross' && !['crossing', 'facingCloak'].includes(activeState.current)) {
+      dissolveToState('crossing');
+    }
   }, [currentLineId]);
 
   useEffect(() => {
@@ -46,8 +49,7 @@ export default function FieldScene({ activeTriggers = [], currentLineId }) {
       dissolveToState('byRiver');
     }
     if (activeTriggers.includes('TRANSITION_TO_CLOAKED_FIGURE') && activeState.current !== 'facingCloak') {
-      dissolveToState('crossing');
-      dissolveToState('facingCloak', 2200);
+      dissolveToState('facingCloak');
     }
   }, [activeTriggers]);
 

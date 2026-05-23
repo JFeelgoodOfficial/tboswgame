@@ -69,7 +69,7 @@ const TRANSITION_TRIGGERS = new Set([
 function SceneBackground({ sceneId, activeTriggers, currentLineId, onComplete }) {
   switch (sceneId) {
     case 'field_lady':     return <FieldScene activeTriggers={activeTriggers} currentLineId={currentLineId} />;
-    case 'field_cloaked':  return <FieldCloakedScene activeTriggers={activeTriggers} />;
+    case 'field_cloaked':  return <FieldCloakedScene activeTriggers={activeTriggers} currentLineId={currentLineId} />;
     case 'line_crowd':     return <LineScene activeTriggers={activeTriggers} />;
     case 'desert_warrior': return <DesertScene activeTriggers={activeTriggers} />;
     case 'darkness_event': return <DarknessScene activeTriggers={activeTriggers} />;
