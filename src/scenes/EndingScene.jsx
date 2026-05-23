@@ -29,7 +29,7 @@ const CREDITS = [
   'You are loved.',
 ];
 
-export default function EndingScene({ activeTriggers = [] }) {
+export default function EndingScene({ activeTriggers = [], onComplete }) {
   const [rolling, setRolling] = useState(false);
 
   useEffect(() => {
@@ -37,6 +37,11 @@ export default function EndingScene({ activeTriggers = [] }) {
       setTimeout(() => setRolling(true), 600);
     }
   }, [activeTriggers]);
+
+  function handleCreditsEnd() {
+    setRolling(false);
+    onComplete?.();
+  }
 
   return (
     <div className="scene ending-scene">
@@ -55,8 +60,8 @@ export default function EndingScene({ activeTriggers = [] }) {
         />
       ))}
       {rolling && (
-        <div className="credits-scroll">
-          <div className="credits-inner">
+        <div className="credits-scroll" onClick={handleCreditsEnd}>
+          <div className="credits-inner" onAnimationEnd={handleCreditsEnd}>
             {CREDITS.map((line, i) => (
               <div key={i} className={`credits-line ${line === '' ? 'spacer' : ''} ${i === 0 ? 'credits-title' : ''}`}>
                 {line}

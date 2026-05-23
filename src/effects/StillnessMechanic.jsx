@@ -6,14 +6,10 @@ const HOLD_DURATION = 3000;
 export default function StillnessMechanic({ onComplete }) {
   const [held, setHeld] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile] = useState(() => 'ontouchstart' in window);
   const startRef = useRef(null);
   const rafRef = useRef(null);
   const doneRef = useRef(false);
-
-  useEffect(() => {
-    setIsMobile('ontouchstart' in window);
-  }, []);
 
   function startHold() {
     if (doneRef.current) return;

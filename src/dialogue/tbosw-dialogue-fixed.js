@@ -20,6 +20,8 @@ export const FLAGS = {
   sawShadowSelf:      false,
   metStranger:        false,
   pickedUpMask:       null, // null = not yet decided; true/false after mask scene
+  waitedOnce:         false,
+  waitedTwice:        false,
 };
 
 export const SCENE_MANIFEST = [
@@ -277,22 +279,28 @@ export const lineScene_Crowd = {
       text: "Something stirs in you — a sensation that rolls beneath your skin like the shift of sand before a windstorm.",
       emotion: "hesitant",
       choices: [
-        { label: "Wait", next: "line_wait" },
+        { label: "Wait", next: "line_wait", condition: (flags) => !flags.waitedTwice },
         { label: "Leave the line", next: "line_leave" }
       ]
     },
-    // FIX: wait now has a second loop beat with slightly different
-    // narration before cycling back, so repeated waits don't feel
-    // identical. After two loops the prompt softens toward leaving.
     line_wait: {
       id: "line_wait", speaker: "NARRATOR",
       text: "The line does not move. The passage of seasons could be minutes or hours or years.",
-      emotion: "quiet", next: "line_wait_02"
+      emotion: "quiet",
+      setsFlag: "waitedOnce",
+      next: (flags) => flags.waitedOnce ? "line_wait_03" : "line_wait_02",
     },
     line_wait_02: {
       id: "line_wait_02", speaker: "BOY",
       text: "...",
       emotion: "quiet", next: "line_choice"
+    },
+    line_wait_03: {
+      id: "line_wait_03", speaker: "NARRATOR",
+      text: "The line has not moved. It will not move. You have known this for some time now.",
+      emotion: "broken",
+      setsFlag: "waitedTwice",
+      next: "line_choice"
     },
     line_leave: {
       id: "line_leave", speaker: "NARRATOR",
@@ -468,7 +476,7 @@ export const desertScene_Warrior = {
       id: "warrior_ash", speaker: "NARRATOR",
       text: "His body — then his face — become ashes. Dancing like dying ember sprites in the wind. Only the stone remains. Smoother than before.",
       emotion: "sad",
-      trigger: "DARKNESS_EVENT"
+      trigger: "FADE_TO_DARKNESS"
     }
   }
 };

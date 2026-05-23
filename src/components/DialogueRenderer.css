@@ -138,6 +138,11 @@
   color: #fff8e8;
 }
 
+.choice-btn:active {
+  background: rgba(200, 185, 155, 0.22);
+  border-color: rgba(200, 185, 155, 1);
+}
+
 .choice-arrow {
   font-size: 0.6rem;
   color: rgba(200, 185, 155, 0.5);
