@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useMemo } from 'react';
 import './scenes.css';
 
 const IMAGES = {
+  facing:      '/images/tbosw-boycloak.jpg',
   walking:     '/images/tbosw-boywalkswithcloaktocrowd.png',
   approaching: '/images/tbosw-peterhivets1.jpg',
   closeup:     '/images/tbosw-peterhivets2.png',
@@ -32,10 +33,10 @@ function WalkingParticles() {
   );
 }
 
-export default function FieldCloakedScene({ activeTriggers = [] }) {
-  const [state, setState] = useState('walking');
+export default function FieldCloakedScene({ activeTriggers = [], currentLineId }) {
+  const [state, setState] = useState('facing');
   const [imgOpacity, setImgOpacity] = useState(1);
-  const activeState = useRef('walking');
+  const activeState = useRef('facing');
 
   function dissolve(fn, delay = 0) {
     setTimeout(() => {
@@ -43,6 +44,14 @@ export default function FieldCloakedScene({ activeTriggers = [] }) {
       setTimeout(() => { fn(); setImgOpacity(1); }, 350);
     }, delay);
   }
+
+  // "You begin to walk together" — transition to walking image
+  useEffect(() => {
+    if (currentLineId === 'cloak_03' && activeState.current === 'facing') {
+      activeState.current = 'walking';
+      dissolve(() => setState('walking'));
+    }
+  }, [currentLineId]);
 
   useEffect(() => {
     if (activeTriggers.includes('TRANSITION_TO_LINE_SCENE') && activeState.current === 'walking') {
