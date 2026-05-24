@@ -41,19 +41,19 @@ export default function GardenScene({ activeTriggers = [], currentLineId }) {
   }, [currentLineId]);
 
   useEffect(() => {
-    if (activeTriggers.includes('HUG_ANIMATION') && activeState.current !== 'hugging') {
+    if (activeTriggers.includes('HUG_ANIMATION') && activeState.current === 'leaving') {
       activeState.current = 'hugging';
       dissolve(() => setState('hugging'));
     }
-    if (activeTriggers.includes('MASK_DROP_ANIMATION') && activeState.current !== 'maskUp') {
+    if (activeTriggers.includes('MASK_DROP_ANIMATION') && activeState.current === 'hugging') {
       activeState.current = 'maskUp';
       dissolve(() => setState('maskUp'), 300);
     }
-    if (activeTriggers.includes('CLOAKED_DISSOLVE') && activeState.current !== 'dissolving') {
+    if (activeTriggers.includes('CLOAKED_DISSOLVE') && activeState.current === 'maskUp') {
       activeState.current = 'dissolving';
       dissolve(() => setState('dissolving'), 600);
     }
-    if (activeTriggers.includes('MASK_CHOICE_ENABLE') && activeState.current !== 'maskDown') {
+    if (activeTriggers.includes('MASK_CHOICE_ENABLE') && activeState.current === 'dissolving') {
       activeState.current = 'maskDown';
       dissolve(() => setState('maskDown'), 1200);
     }
