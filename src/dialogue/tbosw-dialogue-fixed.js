@@ -217,7 +217,12 @@ export const fieldScene_CloakedFigure = {
       text: "You nod to yourself. You are okay with this. You continue onward — together.",
       emotion: "determined",
       trigger: "TRANSITION_TO_LINE_SCENE",
-      next: "cloak_peterhivets_01"
+      next: "cloak_crowd"
+    },
+    cloak_crowd: {
+      id: "cloak_crowd", speaker: "NARRATOR",
+      text: "Ahead, a crowd has gathered in a loose circle. A man stands at the center, speaking with his hands. The others lean in — listening. You and the cloaked figure draw closer, slipping quietly to the edge.",
+      emotion: "quiet", next: "cloak_peterhivets_01"
     },
     cloak_peterhivets_01: {
       id: "cloak_peterhivets_01", speaker: "NPC",
