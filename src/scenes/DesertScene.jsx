@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './scenes.css';
 
 const DESERT_IMAGES = {
@@ -11,6 +11,7 @@ export default function DesertScene({ activeTriggers = [] }) {
   const [desertState, setDesertState] = useState('default');
   const [imgOpacity, setImgOpacity] = useState(1);
   const [shaking, setShaking] = useState(false);
+  const activeState = useRef('default');
 
   useEffect(() => {
     if (activeTriggers.includes('SCREEN_SHAKE') && !shaking) {
@@ -20,11 +21,13 @@ export default function DesertScene({ activeTriggers = [] }) {
   }, [activeTriggers]);
 
   useEffect(() => {
-    if (activeTriggers.includes('EMBRACE_ANIMATION') && desertState === 'default') {
+    if (activeTriggers.includes('EMBRACE_ANIMATION') && activeState.current === 'default') {
+      activeState.current = 'embracing';
       setImgOpacity(0);
       setTimeout(() => { setDesertState('embracing'); setImgOpacity(1); }, 350);
     }
-    if (activeTriggers.includes('ASH_DISSOLVE') && desertState !== 'dissolving') {
+    if (activeTriggers.includes('ASH_DISSOLVE') && activeState.current === 'embracing') {
+      activeState.current = 'dissolving';
       setTimeout(() => {
         setImgOpacity(0);
         setTimeout(() => { setDesertState('dissolving'); setImgOpacity(1); }, 350);
