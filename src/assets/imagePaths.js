@@ -5,6 +5,7 @@ export const IMAGE_PATHS = [
   '/images/tbosw-rivercrossing.png',
   '/images/tbosw-boycloak.jpg',
   '/images/tbosw-boywalkswithcloaktocrowd.png',
+  '/images/tbosw-peterhivets0.jpg',
   '/images/tbosw-peterhivets1.jpg',
   '/images/tbosw-peterhivets2.png',
   '/images/tbosw-line1.jpg',

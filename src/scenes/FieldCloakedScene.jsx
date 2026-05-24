@@ -4,6 +4,7 @@ import './scenes.css';
 const IMAGES = {
   facing:      '/images/tbosw-boycloak.jpg',
   walking:     '/images/tbosw-boywalkswithcloaktocrowd.png',
+  crowd:       '/images/tbosw-peterhivets0.jpg',
   approaching: '/images/tbosw-peterhivets1.jpg',
   closeup:     '/images/tbosw-peterhivets2.png',
 };
@@ -53,13 +54,25 @@ export default function FieldCloakedScene({ activeTriggers = [], currentLineId }
     }
   }, [currentLineId]);
 
+  // Approaching the crowd — show peterhivets0 when trigger fires
   useEffect(() => {
     if (activeTriggers.includes('TRANSITION_TO_LINE_SCENE') && activeState.current === 'walking') {
-      activeState.current = 'approaching';
-      dissolve(() => setState('approaching'));
-      dissolve(() => { activeState.current = 'closeup'; setState('closeup'); }, 2300);
+      activeState.current = 'crowd';
+      dissolve(() => setState('crowd'));
     }
   }, [activeTriggers]);
+
+  // NPC story — advance images as lines play
+  useEffect(() => {
+    if (currentLineId === 'cloak_peterhivets_01' && activeState.current === 'crowd') {
+      activeState.current = 'approaching';
+      dissolve(() => setState('approaching'));
+    }
+    if (currentLineId === 'cloak_peterhivets_03' && activeState.current === 'approaching') {
+      activeState.current = 'closeup';
+      dissolve(() => setState('closeup'));
+    }
+  }, [currentLineId]);
 
   return (
     <div className="scene field-cloaked-scene">

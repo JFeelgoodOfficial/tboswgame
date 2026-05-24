@@ -9,8 +9,8 @@ const PILLOW_IMAGES = {
 };
 
 function getImageState(lineId, activeTriggers) {
-  if (activeTriggers.includes('PILLOW_CRASH') || lineId === 'pillow_06') return 'crash';
   if (lineId === 'pillow_07') return 'aftermath';
+  if (activeTriggers.includes('PILLOW_CRASH') || lineId === 'pillow_06') return 'crash';
   if (['pillow_03', 'pillow_04', 'pillow_05'].includes(lineId)) return 'hesitate';
   return 'magic';
 }
