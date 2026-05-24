@@ -11,7 +11,7 @@ const SPEAKER_LABELS = {
   STRANGER: 'Stranger',
   CLOAKED_FIGURE: 'Cloaked Figure',
   LADY_IN_WHITE: 'Lady in White',
-  NPC:           'Stranger in Line',
+  NPC:           'Man in the Crowd',
   YOUNGER_WOMAN: 'Woman',
   OLDER_WOMAN:   'Woman',
   FATHER:        'Father',
