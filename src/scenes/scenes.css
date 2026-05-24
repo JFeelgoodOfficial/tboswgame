@@ -1,11 +1,17 @@
 /* ════════════════════════════════════════════════
    SHARED SCENE BASE
    ════════════════════════════════════════════════ */
+@keyframes sceneFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 .scene {
   position: absolute;
   inset: 0;
   overflow: hidden;
   background: #000;
+  animation: sceneFadeIn 0.25s ease;
 }
 
 .scene-bg {
