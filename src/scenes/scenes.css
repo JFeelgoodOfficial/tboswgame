@@ -1,6 +1,11 @@
-/* ════════════════════════════════════════════════
-   SHARED SCENE BASE
-   ════════════════════════════════════════════════ */
+@media (hover: hover) and (pointer: fine) {
+  .scene-bg {
+    object-fit: contain !important;
+    object-position: left center !important;
+  }
+}
+
+
 @keyframes sceneFadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
